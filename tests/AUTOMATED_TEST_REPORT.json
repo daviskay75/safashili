@@ -1,0 +1,281 @@
+{
+  "testDate": "2025-06-10T18:07:04.843Z",
+  "baseUrl": "http://localhost:3001",
+  "summary": {
+    "totalIssues": 20,
+    "criticalIssues": 20,
+    "pagesTestedSuccessfully": 8,
+    "formsTestedSuccessfully": 2
+  },
+  "issues": [
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "location": {
+        "url": "http://localhost:3001/_next/image?url=%2Fimages%2Fsafa-shili-about.jpg&w=1080&q=75"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Page Error",
+      "message": "Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <PsychotraumatologiePage>\n      <SpecialtyPageTemplate specialtyData={{id:\"psycho...\", ...}}>\n        <div className=\"min-h-screen\">\n          <_c className=\"pt-20 pb-1...\">\n            <section ref={null} className=\"bg-white p...\">\n              <_c size=\"lg\">\n                <div ref={null} className=\"mx-auto px...\">\n                  <_c>\n                    <div ref={null} className=\"mx-auto px...\">\n                      <div className=\"max-w-4xl ...\">\n                        <_c>\n                        <_c>\n                        <p>\n                        <p>\n                        <div className=\"flex flex-...\">\n                          <_c size=\"lg\" onClick={function handleContactClick} asChild={true}>\n                            <LinkComponent href=\"/rendez-vous\" className=\"inline-fle...\" ref={null} ...>\n+                             <a\n+                               className=\"inline-flex items-center justify-center rounded-lg font-medium transition-c...\"\n+                               ref={function}\n+                               onClick={function onClick}\n+                               onMouseEnter={function onMouseEnter}\n+                               onTouchStart={function onTouchStart}\n+                               href=\"/rendez-vous\"\n+                             >\n-                             <button\n-                               className=\"inline-flex items-center justify-center rounded-lg font-medium transition-c...\"\n-                             >\n                          ...\n          ...\n    ...\n\nthrowOnHydrationMismatch (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:5037:56)\nbeginWork (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:8209:918)\nrunWithFiberInDEV (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:3073:74)\nperformUnitOfWork (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10243:97)\nworkLoopConcurrentByScheduler (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10239:58)",
+      "stack": "Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <PsychotraumatologiePage>\n      <SpecialtyPageTemplate specialtyData={{id:\"psycho...\", ...}}>\n        <div className=\"min-h-screen\">\n          <_c className=\"pt-20 pb-1...\">\n            <section ref={null} className=\"bg-white p...\">\n              <_c size=\"lg\">\n                <div ref={null} className=\"mx-auto px...\">\n                  <_c>\n                    <div ref={null} className=\"mx-auto px...\">\n                      <div className=\"max-w-4xl ...\">\n                        <_c>\n                        <_c>\n                        <p>\n                        <p>\n                        <div className=\"flex flex-...\">\n                          <_c size=\"lg\" onClick={function handleContactClick} asChild={true}>\n                            <LinkComponent href=\"/rendez-vous\" className=\"inline-fle...\" ref={null} ...>\n+                             <a\n+                               className=\"inline-flex items-center justify-center rounded-lg font-medium transition-c...\"\n+                               ref={function}\n+                               onClick={function onClick}\n+                               onMouseEnter={function onMouseEnter}\n+                               onTouchStart={function onTouchStart}\n+                               href=\"/rendez-vous\"\n+                             >\n-                             <button\n-                               className=\"inline-flex items-center justify-center rounded-lg font-medium transition-c...\"\n-                             >\n                          ...\n          ...\n    ...\n\nthrowOnHydrationMismatch (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:5037:56)\nbeginWork (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:8209:918)\nrunWithFiberInDEV (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:3073:74)\nperformUnitOfWork (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10243:97)\nworkLoopConcurrentByScheduler (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10239:58)\n    at getReactStitchedError (http://localhost:3001/_next/static/chunks/node_modules_next_dist_client_8f19e6fb._.js:968:44)\n    at onRecoverableError (http://localhost:3001/_next/static/chunks/node_modules_next_dist_client_8f19e6fb._.js:1324:68)\n    at runWithFiberInDEV (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:3073:74)\n    at flushSpawnedWork (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10521:25)\n    at commitRoot (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10392:13)\n    at commitRootWhenReady (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:9950:9)\n    at performWorkOnRoot (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:9928:25)\n    at performWorkOnRootViaSchedulerTask (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10826:9)\n    at performWorkUntilDeadline (http://localhost:3001/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:1982:64)"
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    },
+    {
+      "type": "Console Error",
+      "message": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "location": {
+        "url": "http://localhost:3001/favicon.ico?favicon.45db1c09.ico"
+      }
+    }
+  ],
+  "testResults": {
+    "navigation": [
+      {
+        "page": "About",
+        "url": "/about",
+        "status": "success",
+        "title": "À propos - Safa Shili, Psychologue Clinicienne Spécialisée",
+        "h1Text": "Safa ShiliMon Parcours & Mon Approche"
+      },
+      {
+        "page": "Contact",
+        "url": "/contact",
+        "status": "success",
+        "title": "Contact - Prendre Rendez-vous avec Safa Shili Psychologue",
+        "h1Text": "Prendre Rendez-vous"
+      },
+      {
+        "page": "Booking",
+        "url": "/rendez-vous",
+        "status": "success",
+        "title": "Prendre Rendez-vous en Ligne - Safa Shili Psychologue Rosny-sous-Bois",
+        "h1Text": "Prendre Rendez-vous en Ligne"
+      },
+      {
+        "page": "Blog",
+        "url": "/blog",
+        "status": "success",
+        "title": "Blog | Safa Shili Psychologue - Conseils et Ressources en Santé Mentale",
+        "h1Text": "Blog & Ressources"
+      },
+      {
+        "page": "Violence Conjugale",
+        "url": "/specialites/violence-conjugale",
+        "status": "success",
+        "title": "Violence conjugale & familiale | Safa Shili Psychologue",
+        "h1Text": "Violence conjugale & familiale"
+      },
+      {
+        "page": "Psychotraumatologie",
+        "url": "/specialites/psychotraumatologie",
+        "status": "success",
+        "title": "Psychotraumatologie | Safa Shili Psychologue",
+        "h1Text": "Psychotraumatologie"
+      },
+      {
+        "page": "Rosny-sous-Bois",
+        "url": "/secteur/rosny-sous-bois",
+        "status": "success",
+        "title": "Psychologue Rosny-sous-Bois 93110 | Safa Shili Psychologue",
+        "h1Text": "Votre psychologue spécialisée au cœur de Rosny-sous-Bois"
+      },
+      {
+        "page": "Cabinet Consultation",
+        "url": "/modalites/consultation-cabinet",
+        "status": "success",
+        "title": "Consultation au cabinet | Safa Shili Psychologue",
+        "h1Text": "Consultation au cabinet"
+      }
+    ],
+    "forms": [
+      {
+        "form": "Contact Form",
+        "status": "success",
+        "fields": {
+          "hasNameField": true,
+          "hasEmailField": true,
+          "hasMessageField": true,
+          "hasConsentCheckbox": false
+        }
+      },
+      {
+        "form": "Booking Form",
+        "status": "success",
+        "fields": {
+          "hasFirstName": true,
+          "hasLastName": true,
+          "hasEmail": true,
+          "hasPhone": true,
+          "hasConsultationType": true
+        }
+      }
+    ],
+    "pages": [
+      {
+        "page": "Homepage",
+        "url": "/",
+        "status": "success",
+        "details": {
+          "hasHero": true,
+          "navLinksCount": 18,
+          "hasServices": true,
+          "ctaButtonsCount": 5,
+          "hasProfessionalImage": true
+        }
+      },
+      {
+        "page": "Blog System",
+        "status": "success",
+        "details": {
+          "blogListingWorks": true,
+          "individualPostWorks": true,
+          "hasMDXContent": true
+        }
+      }
+    ],
+    "responsive": [
+      {
+        "viewport": "Mobile",
+        "width": 375,
+        "height": 667,
+        "status": "success"
+      },
+      {
+        "viewport": "Tablet",
+        "width": 768,
+        "height": 1024,
+        "status": "success"
+      },
+      {
+        "viewport": "Desktop",
+        "width": 1920,
+        "height": 1080,
+        "status": "success"
+      }
+    ],
+    "performance": [],
+    "accessibility": []
+  },
+  "recommendations": [
+    "🔧 Review and fix the identified issues before deployment."
+  ]
+}

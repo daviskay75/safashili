@@ -1,0 +1,49 @@
+<svg width="800" height="1000" viewBox="0 0 800 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Professional gradient background -->
+  <defs>
+    <linearGradient id="professionalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1D4ED8;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="1000" fill="url(#professionalGradient)"/>
+  
+  <!-- Professional silhouette -->
+  <circle cx="400" cy="300" r="120" fill="rgba(255,255,255,0.2)" filter="url(#shadow)"/>
+  
+  <!-- Person icon -->
+  <g transform="translate(400, 300)">
+    <!-- Head -->
+    <circle cx="0" cy="-40" r="35" fill="rgba(255,255,255,0.8)"/>
+    <!-- Body -->
+    <path d="M -50 20 Q -50 -10 -35 -15 Q 0 -20 35 -15 Q 50 -10 50 20 L 50 80 Q 50 90 40 90 L -40 90 Q -50 90 -50 80 Z" fill="rgba(255,255,255,0.8)"/>
+  </g>
+  
+  <!-- Professional badge -->
+  <rect x="300" y="480" width="200" height="60" rx="30" fill="rgba(255,255,255,0.9)" filter="url(#shadow)"/>
+  <text x="400" y="505" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#1D4ED8">Safa Shili</text>
+  <text x="400" y="525" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#6B7280">Psychologue Clinicienne</text>
+  
+  <!-- Decorative elements -->
+  <circle cx="150" cy="200" r="4" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="650" cy="150" r="6" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="100" cy="400" r="3" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="700" cy="350" r="5" fill="rgba(255,255,255,0.25)"/>
+  
+  <!-- Professional credentials -->
+  <rect x="200" y="600" width="400" height="200" rx="20" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <text x="400" y="630" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="rgba(255,255,255,0.9)">Spécialisations</text>
+  <text x="400" y="660" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="rgba(255,255,255,0.8)">• Violence conjugale & familiale</text>
+  <text x="400" y="680" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="rgba(255,255,255,0.8)">• Psychotraumatologie</text>
+  <text x="400" y="700" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="rgba(255,255,255,0.8)">• Thérapie adolescents</text>
+  <text x="400" y="720" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="rgba(255,255,255,0.8)">• Accompagnement adultes</text>
+  
+  <!-- Location -->
+  <text x="400" y="760" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="rgba(255,255,255,0.9)">Rosny-sous-Bois (93110)</text>
+  <text x="400" y="780" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="rgba(255,255,255,0.7)">Seine-Saint-Denis</text>
+</svg>

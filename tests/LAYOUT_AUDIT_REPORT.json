@@ -1,0 +1,272 @@
+{
+  "auditDate": "2025-06-10T18:13:34.755Z",
+  "baseUrl": "http://localhost:3001",
+  "summary": {
+    "totalPages": 0,
+    "pagesWithHeader": 0,
+    "pagesWithFooter": 0,
+    "pagesWithNavigation": 0,
+    "totalIssues": 22,
+    "criticalIssues": 19,
+    "highIssues": 3
+  },
+  "issues": [
+    {
+      "type": "Page Load Error",
+      "page": "Homepage",
+      "url": "/",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "About",
+      "url": "/about",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Contact",
+      "url": "/contact",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Booking",
+      "url": "/rendez-vous",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Blog",
+      "url": "/blog",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Violence Conjugale",
+      "url": "/specialites/violence-conjugale",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Psychotraumatologie",
+      "url": "/specialites/psychotraumatologie",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Thérapie Adolescents",
+      "url": "/specialites/therapie-adolescents",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Accompagnement Adultes",
+      "url": "/specialites/accompagnement-adultes",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Souffrance au Travail",
+      "url": "/specialites/souffrance-travail",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Rosny-sous-Bois",
+      "url": "/secteur/rosny-sous-bois",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Montreuil",
+      "url": "/secteur/montreuil",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Bondy",
+      "url": "/secteur/bondy",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Bagnolet",
+      "url": "/secteur/bagnolet",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Noisy-le-Sec",
+      "url": "/secteur/noisy-le-sec",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Cabinet Consultation",
+      "url": "/modalites/consultation-cabinet",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Home Consultation",
+      "url": "/modalites/consultation-domicile",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Distance Consultation",
+      "url": "/modalites/suivi-distance",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Page Load Error",
+      "page": "Group Therapy",
+      "url": "/modalites/therapie-groupe",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'footer *:contains(\"contact\"), footer *:contains(\"06\"), footer *:contains(\"@\")' is not a valid selector.",
+      "severity": "critical"
+    },
+    {
+      "type": "Broken Navigation Link",
+      "link": "/specialites",
+      "text": "Spécialités",
+      "status": 404,
+      "severity": "high"
+    },
+    {
+      "type": "Broken Navigation Link",
+      "link": "/modalites",
+      "text": "Modalités",
+      "status": 404,
+      "severity": "high"
+    },
+    {
+      "type": "Broken Navigation Link",
+      "link": "/infos-pratiques",
+      "text": "Infos pratiques",
+      "status": 404,
+      "severity": "high"
+    }
+  ],
+  "auditResults": {
+    "headerFooterCheck": [],
+    "missingPages": [],
+    "navigationConsistency": {
+      "totalLinks": 18,
+      "workingLinks": 15,
+      "brokenLinks": 3,
+      "allLinks": [
+        {
+          "text": "SSSafa ShiliPsychologue",
+          "href": "/",
+          "isExternal": false
+        },
+        {
+          "text": "Accueil",
+          "href": "/",
+          "isExternal": false
+        },
+        {
+          "text": "À propos",
+          "href": "/about",
+          "isExternal": false
+        },
+        {
+          "text": "Spécialités",
+          "href": "/specialites",
+          "isExternal": false
+        },
+        {
+          "text": "Violence conjugale",
+          "href": "/specialites/violence-conjugale",
+          "isExternal": false
+        },
+        {
+          "text": "Psychotraumatologie",
+          "href": "/specialites/psychotraumatologie",
+          "isExternal": false
+        },
+        {
+          "text": "Thérapie adolescents",
+          "href": "/specialites/therapie-adolescents",
+          "isExternal": false
+        },
+        {
+          "text": "Accompagnement adultes",
+          "href": "/specialites/accompagnement-adultes",
+          "isExternal": false
+        },
+        {
+          "text": "Souffrance au travail",
+          "href": "/specialites/souffrance-travail",
+          "isExternal": false
+        },
+        {
+          "text": "Modalités",
+          "href": "/modalites",
+          "isExternal": false
+        },
+        {
+          "text": "Consultation cabinet",
+          "href": "/modalites/consultation-cabinet",
+          "isExternal": false
+        },
+        {
+          "text": "Thérapies de groupe",
+          "href": "/modalites/therapie-groupe",
+          "isExternal": false
+        },
+        {
+          "text": "Suivi à distance",
+          "href": "/modalites/suivi-distance",
+          "isExternal": false
+        },
+        {
+          "text": "Consultations domicile",
+          "href": "/modalites/consultation-domicile",
+          "isExternal": false
+        },
+        {
+          "text": "Infos pratiques",
+          "href": "/infos-pratiques",
+          "isExternal": false
+        },
+        {
+          "text": "Blog",
+          "href": "/blog",
+          "isExternal": false
+        },
+        {
+          "text": "Contact",
+          "href": "/contact",
+          "isExternal": false
+        },
+        {
+          "text": "Prendre RDV",
+          "href": "/rendez-vous",
+          "isExternal": false
+        }
+      ]
+    },
+    "layoutIssues": []
+  },
+  "recommendations": []
+}

@@ -1,103 +1,317 @@
-import Image from "next/image";
+import Image from 'next/image'
+import Link from 'next/link'
+import { 
+  PhoneIcon, 
+  MapPinIcon,
+  StarIcon,
+  ShieldCheckIcon,
+  HeartIcon,
+  UserGroupIcon,
+  ClockIcon,
+  CheckCircleIcon
+} from '@heroicons/react/24/outline'
+import { Layout } from '@/components/layout'
+import { Button, Section, Heading, Card, CardContent, Badge, Testimonials, FAQ } from '@/components/ui'
+import { CONTACT_INFO, SERVICES, TESTIMONIALS, FAQS } from '@/lib/constants'
+import { formatPhoneNumber } from '@/lib/utils'
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <Layout>
+      {/* Hero Section */}
+      <Section variant="primary" padding="xl">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <Badge variant="specialty" className="mb-4">
+              Spécialisée Violence & Traumatisme
+            </Badge>
+            
+            <Heading as="h1" variant="hero" className="mb-6">
+              Safa Shili
+              <span className="block text-2xl sm:text-3xl lg:text-4xl text-blue-600 font-normal mt-2">
+                Psychologue Clinicienne
+              </span>
+            </Heading>
+            
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              Accompagnement psychologique spécialisé en <strong>violence conjugale</strong>, 
+              <strong> psychotraumatologie</strong> et <strong>thérapies individuelles</strong> 
+              à Rosny-sous-Bois et communes limitrophes.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <Link href="/rendez-vous">
+                <Button size="lg" className="w-full sm:w-auto">
+                  <PhoneIcon className="h-5 w-5 mr-2" />
+                  Prendre Rendez-vous
+                </Button>
+              </Link>
+              
+              <Link href="/about">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  Découvrir mon approche
+                </Button>
+              </Link>
+            </div>
+            
+            {/* Contact rapide */}
+            <div className="flex flex-col sm:flex-row gap-4 text-sm text-gray-600">
+              <div className="flex items-center">
+                <PhoneIcon className="h-4 w-4 mr-2" />
+                <span>{formatPhoneNumber(CONTACT_INFO.phone)}</span>
+              </div>
+              <div className="flex items-center">
+                <MapPinIcon className="h-4 w-4 mr-2" />
+                <span>Rosny-sous-Bois (93110)</span>
+              </div>
+              <div className="flex items-center">
+                <ClockIcon className="h-4 w-4 mr-2" />
+                <span>Du lundi au samedi</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="relative">
+            <div className="aspect-[4/5] relative rounded-2xl overflow-hidden shadow-2xl">
+              <picture>
+                <source 
+                  srcSet="/images/safa-shili-psychologue.webp" 
+                  type="image/webp" 
+                />
+                <Image
+                  src="/images/safa-shili-psychologue.jpg"
+                  alt="Safa Shili, psychologue clinicienne spécialisée en violence conjugale et psychotraumatologie"
+                  fill
+                  className="object-cover"
+                  priority
+                  unoptimized
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </picture>
+            </div>
+            
+            {/* Badges flottants */}
+            <div className="absolute -top-4 -right-4 bg-white rounded-lg shadow-lg p-3">
+              <div className="flex items-center space-x-1 text-yellow-500">
+                {[...Array(5)].map((_, i) => (
+                  <StarIcon key={i} className="h-4 w-4 fill-current" />
+                ))}
+              </div>
+              <p className="text-xs text-gray-600 mt-1">Avis patients</p>
+            </div>
+            
+            <div className="absolute -bottom-4 -left-4 bg-blue-600 text-white rounded-lg shadow-lg p-3">
+              <p className="font-semibold">PSYCHOLOGUE</p>
+              <p className="text-xs">DIPLOMÉE DE L'UNIVERSITÉ DE PARIS</p>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </Section>
+
+      {/* Services Grid */}
+      <Section padding="xl">
+        <div className="text-center mb-12">
+          <Heading as="h2" variant="section" className="mb-4">
+            Mes Spécialités
+          </Heading>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Un accompagnement personnalisé pour chaque problématique, 
+            avec une expertise particulière dans les situations de violence et de traumatisme.
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {SERVICES.map((service) => {
+            const icons = {
+              'shield-check': ShieldCheckIcon,
+              'heart': HeartIcon,
+              'academic-cap': UserGroupIcon,
+              'user': UserGroupIcon,
+              'briefcase': ShieldCheckIcon,
+              'document-text': HeartIcon,
+            }
+            const IconComponent = icons[service.icon as keyof typeof icons] || ShieldCheckIcon
+            
+            return (
+              <Card key={service.id} variant="service" className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <IconComponent className="h-6 w-6 text-blue-600" />
+                  </div>
+                  
+                  <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
+                  <p className="text-gray-600 mb-4">{service.description}</p>
+                  
+                  <div className="flex items-center justify-center space-x-4 text-sm text-gray-500 mb-4">
+                    <span>{service.duration}min</span>
+                    <span>•</span>
+                    <span>{service.price}€</span>
+                  </div>
+                  
+                  <Link href={`/specialites/${service.id}`}>
+                    <Button variant="outline" size="sm" className="w-full">
+                      En savoir plus
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+      </Section>
+
+      {/* About Preview */}
+      <Section variant="secondary" padding="xl">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <Heading as="h2" variant="section" className="mb-6">
+              Une Approche Professionnelle et Bienveillante
+            </Heading>
+            
+            <div className="space-y-6 text-gray-600">
+              <p className="text-lg">
+                Diplômée d'un Master en psychologie clinique de l'Université Paris-Cité, 
+                je vous accompagne avec une expertise particulière dans la prise en charge 
+                des violences et traumatismes.
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span>Spécialisation en violence conjugale et familiale</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span>Expertise en psychotraumatologie et accompagnement des victimes</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span>Formations continues en protection de l'enfance</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span>Approche adaptée aux adolescents et adultes</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-8">
+              <Link href="/about">
+                <Button variant="primary">
+                  Découvrir mon parcours
+                </Button>
+              </Link>
+            </div>
+          </div>
+          
+          <div className="space-y-6">
+            <Card>
+              <CardContent className="p-6">
+                <h3 className="font-semibold mb-3">Formation Universitaire</h3>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li>• Master Psychologie Clinique - Paris-Cité (2021)</li>
+                  <li>• Diplôme d'État Psychologue Clinicien (2020)</li>
+                  <li>• Licence Psychologie Clinique - Paris 7 (2018)</li>
+                </ul>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <h3 className="font-semibold mb-3">Formations Spécialisées</h3>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li>• Protection de l'enfance (2024)</li>
+                  <li>• Clinique de la psychose (2022)</li>
+                  <li>• Psychologie du travail (2022)</li>
+                  <li>• Clinique de l'Autisme (2018)</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </Section>
+
+      {/* Testimonials Section */}
+      <Section padding="xl">
+        <div className="text-center mb-12">
+          <Heading as="h2" variant="section" className="mb-4">
+            Ce Que Disent Mes Patients
+          </Heading>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Découvrez les témoignages de personnes que j'ai accompagnées 
+            dans leur parcours de guérison et de reconstruction.
+          </p>
+        </div>
+        
+        <Testimonials testimonials={TESTIMONIALS} />
+      </Section>
+
+      {/* FAQ Section */}
+      <Section variant="secondary" padding="xl">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div>
+            <Heading as="h2" variant="section" className="mb-6">
+              Questions Fréquentes
+            </Heading>
+            <p className="text-lg text-gray-600 mb-8">
+              Vous vous posez des questions sur le déroulement des consultations, 
+              les tarifs ou mon approche thérapeutique ? Voici les réponses aux 
+              questions les plus fréquentes.
+            </p>
+            
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <CheckCircleIcon className="h-5 w-5 text-green-500 flex-shrink-0" />
+                <span className="text-gray-700">Première consultation gratuite de 15min</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <CheckCircleIcon className="h-5 w-5 text-green-500 flex-shrink-0" />
+                <span className="text-gray-700">Consultations en cabinet, à domicile ou à distance</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <CheckCircleIcon className="h-5 w-5 text-green-500 flex-shrink-0" />
+                <span className="text-gray-700">Remboursement par de nombreuses mutuelles</span>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <FAQ faqs={FAQS} />
+          </div>
+        </div>
+      </Section>
+
+      {/* CTA Section */}
+      <Section variant="primary" padding="lg">
+        <div className="text-center">
+          <Heading as="h2" variant="section" className="mb-4">
+            Prêt(e) à Commencer Votre Accompagnement ?
+          </Heading>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Prenez rendez-vous dès aujourd'hui pour une première consultation 
+            ou contactez-moi pour toute question.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/rendez-vous">
+              <Button size="lg">
+                <PhoneIcon className="h-5 w-5 mr-2" />
+                Prendre Rendez-vous
+              </Button>
+            </Link>
+            
+            <Link href="/infos-pratiques">
+              <Button variant="outline" size="lg">
+                Infos pratiques
+              </Button>
+            </Link>
+          </div>
+          
+          <p className="text-sm text-gray-500 mt-4">
+            Consultation remboursée par certaines mutuelles • Première consultation gratuite de 15min
+          </p>
+        </div>
+      </Section>
+    </Layout>
+  )
 }

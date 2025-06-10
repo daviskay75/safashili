@@ -1,0 +1,23 @@
+
+> site@0.1.0 dev
+> next dev --turbopack
+
+ ⚠ Port 3000 is in use, using available port 3001 instead.
+   ▲ Next.js 15.3.3 (Turbopack)
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.1.17:3001
+
+ ✓ Starting...
+ ✓ Compiled middleware in 100ms
+ ⚠ Duplicate page detected. app/robots.ts and app/robots.txt resolve to /robots.txt
+ ⚠ Duplicate page detected. app/robots.ts and app/robots.txt resolve to /robots.txt/[__metadata_id__]
+ ⚠ Duplicate page detected. app/robots.ts and app/robots.txt resolve to /robots.txt
+ ⚠ Duplicate page detected. app/robots.ts and app/robots.txt resolve to /robots.txt/[__metadata_id__]
+ ✓ Ready in 873ms
+ ✓ Compiled /_not-found/page in 482ms
+ GET / 404 in 626ms
+ GET /test 404 in 55ms
+ GET /about 404 in 28ms
+ ⚠ Duplicate page detected. app/robots.ts and app/robots.txt resolve to /robots.txt
+ ⚠ Duplicate page detected. app/robots.ts and app/robots.txt resolve to /robots.txt/[__metadata_id__]
+[?25h
