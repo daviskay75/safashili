@@ -92,7 +92,7 @@ jest.mock('@emailjs/browser', () => ({
 }))
 
 // Mock Prisma client
-jest.mock('./src/generated/prisma', () => ({
+jest.mock('@prisma/client', () => ({
   PrismaClient: jest.fn().mockImplementation(() => ({
     contact: {
       create: jest.fn(),

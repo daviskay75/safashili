@@ -262,8 +262,9 @@ export class GoogleCalendarService {
         return { success: false, error: 'No valid access token' }
       }
 
-      const startDateTime = new Date(bookingData.preferredDate)
-      const [hours, minutes] = bookingData.preferredTime.split(':').map(Number)
+      const startDateTime = new Date(bookingData.preferredDate || new Date())
+      const timeStr = bookingData.preferredTime || '14:00'
+      const [hours, minutes] = timeStr.includes(':') ? timeStr.split(':').map(Number) : [14, 0]
       startDateTime.setHours(hours, minutes, 0, 0)
 
       const endDateTime = new Date(startDateTime)

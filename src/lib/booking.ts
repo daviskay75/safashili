@@ -285,13 +285,16 @@ export class AppointmentManager {
   // Créer un nouveau rendez-vous (avec support database + fallback memory)
   static async createAppointment(data: BookingFormData): Promise<{ success: boolean; appointmentId?: string; error?: string; calendarEventId?: string }> {
     try {
-      // Valider la date et l'heure
-      const appointmentDate = new Date(data.preferredDate)
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
-      
-      if (appointmentDate < today) {
-        return { success: false, error: 'La date ne peut pas être dans le passé' }
+      // Valider la date et l'heure (optionnel)
+      let appointmentDate: Date | null = null
+      if (data.preferredDate) {
+        appointmentDate = new Date(data.preferredDate)
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+        
+        if (appointmentDate < today) {
+          return { success: false, error: 'La date ne peut pas être dans le passé' }
+        }
       }
       
       // Try database first (production), fallback to memory (development)
@@ -329,11 +332,11 @@ export class AppointmentManager {
       }
       
       // Fallback to memory storage
-      const dateStr = DateUtils.formatDate(appointmentDate)
+      const dateStr = appointmentDate ? DateUtils.formatDate(appointmentDate) : DateUtils.formatDate(new Date())
       const duration = parseInt(data.duration)
       const bufferTime = CONSULTATION_DURATIONS[duration as keyof typeof CONSULTATION_DURATIONS]?.bufferTime || 15
       
-      if (SlotGenerator.hasAppointmentConflict(dateStr, data.preferredTime, duration, bufferTime)) {
+      if (SlotGenerator.hasAppointmentConflict(dateStr, data.preferredTime || '', duration, bufferTime)) {
         return { success: false, error: 'Ce créneau n\'est plus disponible' }
       }
       
@@ -345,7 +348,7 @@ export class AppointmentManager {
         patientEmail: data.email,
         patientName: `${data.firstName} ${data.lastName}`,
         date: dateStr,
-        time: data.preferredTime,
+        time: data.preferredTime || '',
         duration,
         type: data.consultationType,
         status: 'pending',
@@ -377,7 +380,7 @@ export class AppointmentManager {
         id: appointmentId,
         patient: appointment.patientName,
         date: dateStr,
-        time: data.preferredTime,
+        time: data.preferredTime || '',
         calendarEventId
       })
       
@@ -538,20 +541,22 @@ export class BookingValidator {
   static validateBookingRequest(data: BookingFormData): { isValid: boolean; errors: string[] } {
     const errors: string[] = []
     
-    // Validation de la date
-    const appointmentDate = new Date(data.preferredDate)
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    
-    if (appointmentDate < today) {
-      errors.push('La date ne peut pas être dans le passé')
-    }
-    
-    const maxAdvanceBooking = new Date()
-    maxAdvanceBooking.setMonth(maxAdvanceBooking.getMonth() + 3) // 3 mois à l'avance max
-    
-    if (appointmentDate > maxAdvanceBooking) {
-      errors.push('Les rendez-vous ne peuvent être pris que 3 mois à l\'avance')
+    // Validation de la date (optionnel)
+    if (data.preferredDate) {
+      const appointmentDate = new Date(data.preferredDate)
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      
+      if (appointmentDate < today) {
+        errors.push('La date ne peut pas être dans le passé')
+      }
+      
+      const maxAdvanceBooking = new Date()
+      maxAdvanceBooking.setMonth(maxAdvanceBooking.getMonth() + 3) // 3 mois à l'avance max
+      
+      if (appointmentDate > maxAdvanceBooking) {
+        errors.push('Les rendez-vous ne peuvent être pris que 3 mois à l\'avance')
+      }
     }
     
     // Validation du type de consultation et durée
@@ -563,16 +568,19 @@ export class BookingValidator {
       errors.push(`Durée ${duration}min non autorisée pour ce type de consultation` as any)
     }
     
-    // Validation des horaires
-    const dateStr = DateUtils.formatDate(appointmentDate)
-    const weekday = DateUtils.getWeekdayName(appointmentDate)
-    
-    if (DateUtils.isHoliday(dateStr)) {
-      errors.push('Aucun rendez-vous possible les jours fériés')
-    }
-    
-    if (!BUSINESS_HOURS[weekday]) {
-      errors.push('Aucun rendez-vous possible ce jour de la semaine')
+    // Validation des horaires (seulement si une date est fournie)
+    if (data.preferredDate) {
+      const appointmentDate = new Date(data.preferredDate)
+      const dateStr = DateUtils.formatDate(appointmentDate)
+      const weekday = DateUtils.getWeekdayName(appointmentDate)
+      
+      if (DateUtils.isHoliday(dateStr)) {
+        errors.push('Aucun rendez-vous possible les jours fériés')
+      }
+      
+      if (!BUSINESS_HOURS[weekday]) {
+        errors.push('Aucun rendez-vous possible ce jour de la semaine')
+      }
     }
     
     return {

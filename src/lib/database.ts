@@ -1,7 +1,7 @@
 // Database connection and utilities for production
 // Replaces memory storage with persistent database using Prisma
 
-import { PrismaClient } from '../generated/prisma'
+import { PrismaClient } from '@prisma/client'
 import { ContactFormData, NewsletterFormData, BookingFormData } from './schemas'
 
 // Global Prisma client instance
@@ -136,7 +136,7 @@ export class DatabaseContactManager {
         orderBy: { createdAt: 'desc' }
       })
       
-      return contacts.map(contact => ({
+      return contacts.map((contact: any) => ({
         ...contact,
         tags: JSON.parse(contact.tags),
         data: JSON.parse(contact.data)
@@ -170,8 +170,8 @@ export class DatabaseContactManager {
       
       return {
         total,
-        byType: Object.fromEntries(byType.map(item => [item.type, item._count.type])),
-        byStatus: Object.fromEntries(byStatus.map(item => [item.status, item._count.status])),
+        byType: Object.fromEntries(byType.map((item: any) => [item.type, item._count.type])),
+        byStatus: Object.fromEntries(byStatus.map((item: any) => [item.status, item._count.status])),
         recentContacts
       }
       
@@ -369,10 +369,10 @@ export class DatabaseAppointmentManager {
       
       return {
         total,
-        confirmed: byStatus.find(s => s.status === 'confirmed')?._count.status || 0,
-        pending: byStatus.find(s => s.status === 'pending')?._count.status || 0,
-        cancelled: byStatus.find(s => s.status === 'cancelled')?._count.status || 0,
-        byType: Object.fromEntries(byType.map(item => [item.consultationType, item._count.consultationType]))
+        confirmed: byStatus.find((s: any) => s.status === 'confirmed')?._count.status || 0,
+        pending: byStatus.find((s: any) => s.status === 'pending')?._count.status || 0,
+        cancelled: byStatus.find((s: any) => s.status === 'cancelled')?._count.status || 0,
+        byType: Object.fromEntries(byType.map((item: any) => [item.consultationType, item._count.consultationType]))
       }
       
     } catch (error) {
