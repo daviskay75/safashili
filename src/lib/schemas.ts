@@ -6,7 +6,7 @@ export const ContactSchema = z.object({
   lastName: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
   email: z.string().email('Adresse email invalide'),
   phone: z.string().regex(
-    /^(?:\+33|0)[1-9](?:[0-9]{8})$/,
+    /^(?:\+33|0)[1-9](?:[\s.-]?[0-9]){8}$/,
     'Numéro de téléphone invalide (format français requis)'
   ),
   message: z.string().min(10, 'Le message doit contenir au moins 10 caractères'),
@@ -53,7 +53,7 @@ export const BookingSchema = z.object({
   lastName: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
   email: z.string().email('Adresse email invalide'),
   phone: z.string().regex(
-    /^(?:\+33|0)[1-9](?:[0-9]{8})$/,
+    /^(?:\+33|0)[1-9](?:[\s.-]?[0-9]){8}$/,
     'Numéro de téléphone invalide'
   ),
   consultationType: z.enum([
@@ -62,21 +62,15 @@ export const BookingSchema = z.object({
     'groupe', 
     'distance'
   ]),
-  preferredDate: z.string().regex(
-    /^\d{4}-\d{2}-\d{2}$/,
-    'Date invalide (format YYYY-MM-DD)'
-  ),
-  preferredTime: z.string().regex(
-    /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
-    'Heure invalide (format HH:MM)'
-  ),
+  preferredDate: z.string().optional(),
+  preferredTime: z.enum(['', 'morning', 'afternoon', 'evening', 'saturday']).optional(),
   duration: z.enum(['60', '90']),
   isFirstConsultation: z.boolean(),
   reasonForConsultation: z.string().min(20, 'Veuillez décrire brièvement le motif de consultation (min. 20 caractères)'),
   medicalHistory: z.string().optional(),
   emergencyContact: z.object({
-    name: z.string().min(2, 'Nom du contact d\'urgence requis'),
-    phone: z.string().regex(/^(?:\+33|0)[1-9](?:[0-9]{8})$/, 'Téléphone contact d\'urgence invalide')
+    name: z.string().optional(),
+    phone: z.string().optional()
   }).optional(),
   rgpdConsent: z.boolean().refine(
     val => val === true,
