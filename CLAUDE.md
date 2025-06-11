@@ -100,10 +100,15 @@ prisma/
 └── migrations/         # Database migration files
 
 content/
-└── lead-magnets/       # Lead magnet content (markdown format, ready for PDF generation)
-    ├── sortir-violence-conjugale.mdx      # 12-page violence conjugale guide
-    ├── gerer-anxiete-quotidien.mdx        # 8-page anxiety management guide
-    └── 10-signes-consultation-psychologue.mdx # 2-page consultation checklist
+└── lead-magnets/       # Lead magnet content and professional PDFs
+    ├── sortir-violence-conjugale.md       # Source markdown for violence guide
+    ├── gerer-anxiete-quotidien.md         # Source markdown for anxiety guide
+    └── 10-signes-consultation-psychologue.md # Source markdown for consultation checklist
+
+public/content/lead-magnets/pdfs/    # Professional PDF guides (3.47 MB total)
+    ├── guide-sortir-violence-conjugale.pdf     # 0.71 MB - Professional violence safety guide
+    ├── guide-gerer-anxiete-quotidien.pdf       # 0.88 MB - Practical anxiety management techniques
+    └── 10-signes-consultation-psychologue.pdf  # 1.88 MB - Interactive consultation checklist
 
 tests/
 ├── api/               # API endpoint tests (including /api/download)
@@ -124,20 +129,23 @@ docs/
 
 The site implements a complete **Phase 1 Critical Growth Engine** with professional lead magnets and email automation:
 
-**🎯 Lead Magnets (3 Professional Guides):**
-1. **Violence Conjugale Guide** (12 pages) - `/ressources/sortir-violence-conjugale`
+**🎯 Lead Magnets (3 Professional PDF Guides):**
+1. **Violence Conjugale Guide** (0.71 MB, professional PDF) - `/ressources/sortir-violence-conjugale`
    - Target: Victims of domestic violence and their supporters
-   - Content: Safety plan, legal procedures, specialized resources, reconstruction
+   - Content: Comprehensive 12-page safety guide with legal procedures, emergency contacts, reconstruction steps
+   - PDF: `guide-sortir-violence-conjugale.pdf` with professional medical design
    - CTA: Red theme, urgent messaging, specialized support offer
 
-2. **Anxiety Management Guide** (8 pages) - `/ressources/gerer-anxiete-quotidien`
+2. **Anxiety Management Guide** (0.88 MB, professional PDF) - `/ressources/gerer-anxiete-quotidien`
    - Target: People suffering from anxiety and stress
-   - Content: Breathing techniques, cognitive restructuring, daily program
+   - Content: 8-page practical guide with breathing techniques, cognitive restructuring, daily management program
+   - PDF: `guide-gerer-anxiete-quotidien.pdf` with step-by-step techniques
    - CTA: Blue theme, wellness focus, professional techniques
 
-3. **Consultation Checklist** (2 pages) - `/ressources/10-signes-consultation`
+3. **Consultation Checklist** (1.88 MB, professional PDF) - `/ressources/10-signes-consultation`
    - Target: Anyone questioning whether they need psychological support
-   - Content: Self-assessment guide, warning signs, consultation preparation
+   - Content: Comprehensive 10-point assessment with scoring system, emergency contacts, consultation preparation
+   - PDF: `10-signes-consultation-psychologue.pdf` with interactive checklist format
    - CTA: Purple theme, self-reflection, professional guidance
 
 **🎯 Multi-Touchpoint Conversion Funnel:**
@@ -196,16 +204,22 @@ API routes follow RESTful patterns in `/src/app/api/` with production-grade feat
 - `POST /api/contact` - Contact form submission with database persistence
 - `POST /api/newsletter` - Newsletter subscription with GDPR compliance
 - `GET/POST /api/booking` - Appointment booking with Google Calendar integration
-- **`POST /api/download`** - **Lead magnet downloads with email automation and analytics**
-  - Validates lead magnet form submissions
-  - Triggers email delivery with PDF attachments
-  - Initiates 5-email nurturing sequences
-  - Tracks conversion funnel analytics
-  - Manages GDPR-compliant data collection
+- **`POST /api/download`** - **Lead magnet form submission with email automation**
+  - Validates lead magnet form submissions with Zod schemas
+  - Triggers email delivery with secure PDF download links
+  - Initiates 5-email nurturing sequences based on category
+  - Tracks conversion funnel analytics and user behavior
+  - Manages GDPR-compliant data collection and consent
+- **`GET /api/download`** - **Secure PDF download endpoint**
+  - Token-based authentication for PDF access
+  - Direct PDF file serving (3 professional guides: 3.47 MB total)
+  - Download tracking and analytics
+  - CORS security for email client compatibility
 - `POST /api/analytics` - Custom analytics events storage
 
 **Admin APIs:**
-- `GET /api/admin/contacts` - Contact management dashboard (secured)
+- `GET /api/admin/contacts` - Contact management dashboard (secured with admin credentials)
+- `POST /api/admin/auth` - Admin authentication system
 
 **Authentication:**
 - `POST /api/auth/google` - Google Calendar OAuth integration
@@ -320,10 +334,14 @@ NODE_ENV="development"
 ```bash
 DATABASE_URL="postgresql://..."  # Render PostgreSQL URL
 RESEND_API_KEY="re_..."         # Resend email service
-CONTACT_EMAIL="contact@safa-shili-psychologue.fr"
-NEXT_PUBLIC_SITE_URL="https://your-domain.com"
+CONTACT_EMAIL="contact@safashili.com"
+NEXT_PUBLIC_SITE_URL="https://safashili.com"
 CSRF_SECRET="strong-random-string"
 NODE_ENV="production"
+
+# Admin System
+ADMIN_USERNAME="safa.admin"     # Admin dashboard access
+ADMIN_PASSWORD="secure-password" # Change in production
 ```
 
 **Optional Enhancements:**
@@ -374,6 +392,27 @@ NEXT_PUBLIC_DOCTOLIB_PRACTITIONER_ID="..."  # Doctolib practitioner ID for widge
 4. Widget styling customization for brand consistency
 
 **Documentation**: See `/docs/DOCTOLIB_INTEGRATION_SETUP.md` for complete setup guide.
+
+### Admin System Architecture
+
+**Dashboard Access**: `/admin` (secured with basic authentication)
+
+**Admin Credentials** (from environment variables):
+- Username: `safa.admin` (ADMIN_USERNAME)
+- Password: `shouw` (ADMIN_PASSWORD - change in production)
+
+**Admin Features:**
+- Contact management dashboard with database integration
+- Lead magnet download analytics and statistics
+- GDPR-compliant data export and deletion
+- Email sequence subscription management
+- Real-time conversion funnel metrics
+
+**Security:**
+- Basic HTTP authentication for admin routes
+- CSRF protection on all admin operations
+- Rate limiting on admin login attempts
+- Session management with secure cookies
 
 ### Production Deployment
 
@@ -443,17 +482,21 @@ The site emphasizes these psychological specialties:
 
 ## Production Notes
 
-**Current Status**: ✅ Fully production-ready with comprehensive testing and complete lead generation funnel
+**Current Status**: ✅ Fully production-ready with comprehensive testing, complete lead generation funnel, and professional PDF guides
 
 **Architecture Highlights:**
 - Hybrid database/memory storage for maximum reliability
 - Client-side MDX rendering for React 18 compatibility  
-- Professional email service with Resend API
-- **Complete Phase 1 Critical Growth Engine with 3 professional lead magnets**
-- **Multi-touchpoint conversion funnel with email automation**
-- **Smart contextual lead magnet targeting based on content**
+- Professional email service with Resend API integration
+- **Complete Phase 1 Critical Growth Engine with 3 professional PDF guides (3.47 MB total)**
+- **Multi-touchpoint conversion funnel with email automation sequences**
+- **Smart contextual lead magnet targeting based on content analysis**
+- **Secure PDF download system with token authentication**
+- **CORS-compliant API for email client compatibility**
+- **Admin dashboard with contact management (safa.admin access)**
 - Comprehensive test coverage across all critical paths
 - Local SEO optimization for Seine-Saint-Denis region
+- Production Supabase database with lead magnet tracking
 
 **Development Guidelines:**
 - Always run `npm run test:all` before major changes
@@ -481,10 +524,27 @@ The site emphasizes these psychological specialties:
 - Exit-intent popups adapt based on page type and user behavior
 - All lead magnet downloads trigger email automation sequences
 
+**Recent Updates & Issue Resolution:**
+
+✅ **Lead Magnet System Completion (Latest)**:
+- Created 3 professional PDF guides (3.47 MB total) with medical-grade design
+- Fixed CORS "Origin not allowed" error for email download links
+- Implemented secure token-based PDF download system
+- Optimized Prisma Client generation for deployment
+- Added comprehensive download analytics and tracking
+
+✅ **Database & Deployment Optimization**:
+- Enhanced Prisma schema with binary targets for cross-platform deployment  
+- Added `postinstall` script for automatic client generation
+- Resolved Supabase connection issues with proper error handling
+- Implemented hybrid fallback system for maximum reliability
+
 **Emergency Contacts & Support:**
 - Database issues: Check Render dashboard and Prisma logs
 - Email delivery problems: Verify Resend API key and domain verification
 - Build failures: Review `npm run build` output and dependency versions
 - Performance issues: Use `npm run analyze` for bundle analysis
+- PDF download issues: Check token generation and file permissions
 
-The website is ready for immediate production deployment following the `RENDER_DEPLOYMENT.md` guide. The complete Phase 1 Critical Growth Engine with lead magnets, email automation, and multi-touchpoint conversion funnel is fully operational and production-ready.
+**Production Deployment Status:**
+The website is ready for immediate production deployment following the `RENDER_DEPLOYMENT.md` guide. The complete Phase 1 Critical Growth Engine with professional PDF lead magnets, email automation, and multi-touchpoint conversion funnel is fully operational and production-ready with all critical issues resolved.

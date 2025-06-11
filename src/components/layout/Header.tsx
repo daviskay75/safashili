@@ -29,8 +29,17 @@ export function Header() {
           {/* Logo / Brand */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
-                <span className="text-white font-semibold text-sm">SS</span>
+              <div className="h-8 w-8 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-8 h-8">
+                  <circle cx="16" cy="16" r="15" fill="#3b82f6"/>
+                  <g fill="white">
+                    <path d="M8 10 C8 6, 12 4, 16 4 C20 4, 24 6, 24 10 C24 14, 22 16, 22 18 L22 22 C22 24, 20 26, 16 26 C12 26, 10 24, 10 22 L10 18 C10 16, 8 14, 8 10 Z"/>
+                    <path d="M12 12 C11 10, 9 10, 9 13 C9 15, 12 17, 16 20 C20 17, 23 15, 23 13 C23 10, 21 10, 20 12 C19 11, 18 11, 16 12 C14 11, 13 11, 12 12 Z"/>
+                    <circle cx="12" cy="8" r="1"/>
+                    <circle cx="20" cy="8" r="1"/>
+                    <circle cx="16" cy="6" r="0.8"/>
+                  </g>
+                </svg>
               </div>
               <div className="hidden sm:block">
                 <span className="font-semibold text-gray-900">Safa Shili</span>
