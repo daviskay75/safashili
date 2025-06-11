@@ -4,9 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **production-ready** professional psychology practice website for Safa Shili, a clinical psychologist in Rosny-sous-Bois, France. The site specializes in violence counseling, psychotraumatology, and therapeutic services with comprehensive locail SEO optimization for the Seine-Saint-Denis area.
+This is a **production-ready** professional psychology practice website for Safa Shili, a clinical psychologist in Rosny-sous-Bois, France. The site specializes in violence counseling, psychotraumatology, and therapeutic services with comprehensive local SEO optimization for the Seine-Saint-Denis area.
 
 **Status**: ✅ Production-ready, deployed on Render with PostgreSQL database and Resend email service.
+**Lead Generation**: ✅ Complete Phase 1 Critical Growth Engine implemented with 3 professional lead magnets, email automation, and multi-touchpoint conversion funnel.
 
 ## Development Commands
 
@@ -38,7 +39,8 @@ npx prisma studio    # Open Prisma Studio
 - **Framework**: Next.js 15 with App Router
 - **Styling**: Tailwind CSS 4 with custom design system
 - **Database**: PostgreSQL with Prisma ORM (production-ready)
-- **Email**: Resend API for production email delivery
+- **Email**: Resend API for production email delivery & lead nurturing
+- **Lead Generation**: Complete funnel with PDF guides, exit-intent popups, and email sequences
 - **Booking System**: Dual system with Doctolib widget integration + contact forms
 - **Forms**: react-hook-form + Zod validation
 - **UI Components**: Custom design system (no external UI library)
@@ -47,6 +49,7 @@ npx prisma studio    # Open Prisma Studio
 - **Testing**: Jest with comprehensive test suite
 - **Deployment**: Render (PostgreSQL + Web Service)
 - **Authentication**: Google Calendar integration ready
+- **Analytics**: Custom event tracking for lead generation conversion funnel
 
 ### Core Directories Structure
 
@@ -54,29 +57,37 @@ npx prisma studio    # Open Prisma Studio
 src/
 ├── app/                 # Next.js App Router pages and API routes
 │   ├── api/            # Server-side API endpoints (contact, booking, newsletter, admin)
-│   ├── blog/           # Blog pages with MDX support
+│   │   └── download/   # Lead magnet download API with analytics & email automation
+│   ├── blog/           # Blog pages with MDX support & contextual lead magnets
+│   ├── ressources/     # Lead magnet landing pages (3 professional guides)
+│   │   ├── sortir-violence-conjugale/     # Violence conjugale guide (12 pages)
+│   │   ├── gerer-anxiete-quotidien/       # Anxiety management guide (8 pages)
+│   │   └── 10-signes-consultation/        # Consultation checklist (2 pages)
 │   ├── secteur/        # City-specific pages for local SEO
-│   ├── specialites/    # Psychology specialization pages
+│   ├── specialites/    # Psychology specialization pages + contextual lead magnets
 │   └── modalites/      # Consultation modality pages
 ├── components/
 │   ├── ui/             # Design system components (Button, Card, Input, etc.)
 │   ├── layout/         # Layout components (Header, Footer, Layout)
-│   ├── forms/          # Form components (ContactForm, BookingForm)
+│   ├── forms/          # Form components (ContactForm, BookingForm, LeadMagnetForm)
 │   ├── animations/     # Animation components (FadeInSection, HoverEffects)
+│   ├── ExitIntentPopup.tsx     # Smart exit-intent popup system
+│   ├── LeadMagnetSidebar.tsx   # Contextual lead magnet promotion components
+│   ├── SpecialtyPageTemplate.tsx # Template with integrated lead magnet offers
 │   ├── BlogContent.tsx # Client-side MDX blog rendering
 │   └── MDXContent.tsx  # MDX component definitions
 ├── lib/
-│   ├── constants.ts       # Site configuration, contact info, services data
-│   ├── types.ts          # TypeScript interfaces for forms and data
+│   ├── constants.ts       # Site configuration, contact info, services data, navigation
+│   ├── types.ts          # TypeScript interfaces (forms, data, lead magnets)
 │   ├── utils.ts          # Utility functions (formatting, validation, business logic)
-│   ├── schemas.ts        # Zod validation schemas
+│   ├── schemas.ts        # Zod validation schemas (contact, booking, lead magnets)
 │   ├── structured-data.ts # SEO structured data schemas
-│   ├── email.ts          # Resend email service integration
-│   ├── database.ts       # Prisma database operations
+│   ├── email.ts          # Resend email service + 5-email nurturing sequences
+│   ├── database.ts       # Prisma operations + lead magnet tracking
 │   ├── contact-management.ts # Contact form handling
 │   ├── booking.ts        # Appointment booking logic
 │   ├── blog.ts           # Blog content management
-│   └── analytics.ts      # Analytics tracking
+│   └── analytics.ts      # Analytics tracking + conversion funnel events
 ├── middleware.ts         # Rate limiting and security
 └── types/               # Global TypeScript declarations
 ```
@@ -85,23 +96,65 @@ src/
 
 ```
 prisma/
-├── schema.prisma       # Database schema (Contact, Appointment, Analytics models)
+├── schema.prisma       # Database schema (Contact, Appointment, Analytics, LeadMagnet models)
 └── migrations/         # Database migration files
 
+content/
+└── lead-magnets/       # Lead magnet content (markdown format, ready for PDF generation)
+    ├── sortir-violence-conjugale.mdx      # 12-page violence conjugale guide
+    ├── gerer-anxiete-quotidien.mdx        # 8-page anxiety management guide
+    └── 10-signes-consultation-psychologue.mdx # 2-page consultation checklist
+
 tests/
-├── api/               # API endpoint tests
-├── forms/             # Form component tests
+├── api/               # API endpoint tests (including /api/download)
+├── forms/             # Form component tests (including LeadMagnetForm)
 ├── seo/               # SEO and structured data tests
-├── business/          # Business logic tests
+├── business/          # Business logic tests (including lead generation)
 ├── accessibility/     # Accessibility tests
 ├── performance/       # Performance tests
-└── integration/       # Integration tests
+└── integration/       # Integration tests (including conversion funnel)
 
 docs/
 ├── RENDER_DEPLOYMENT.md    # Complete deployment guide
 ├── IMAGE_REQUIREMENTS.md   # Professional image specifications
 └── GOOGLE_CALENDAR_SETUP.md # Google Calendar integration
 ```
+
+### Lead Generation System Architecture
+
+The site implements a complete **Phase 1 Critical Growth Engine** with professional lead magnets and email automation:
+
+**🎯 Lead Magnets (3 Professional Guides):**
+1. **Violence Conjugale Guide** (12 pages) - `/ressources/sortir-violence-conjugale`
+   - Target: Victims of domestic violence and their supporters
+   - Content: Safety plan, legal procedures, specialized resources, reconstruction
+   - CTA: Red theme, urgent messaging, specialized support offer
+
+2. **Anxiety Management Guide** (8 pages) - `/ressources/gerer-anxiete-quotidien`
+   - Target: People suffering from anxiety and stress
+   - Content: Breathing techniques, cognitive restructuring, daily program
+   - CTA: Blue theme, wellness focus, professional techniques
+
+3. **Consultation Checklist** (2 pages) - `/ressources/10-signes-consultation`
+   - Target: Anyone questioning whether they need psychological support
+   - Content: Self-assessment guide, warning signs, consultation preparation
+   - CTA: Purple theme, self-reflection, professional guidance
+
+**🎯 Multi-Touchpoint Conversion Funnel:**
+- **Homepage Hero Section**: Features consultation checklist with visual preview
+- **Specialty Pages**: Contextual lead magnet offers (violence page → violence guide)
+- **Blog Integration**: Smart content analysis determines relevant guide
+- **Sidebar Components**: Reusable LeadMagnetSidebar with 4 variants
+- **Footer Promotion**: "Ressources Gratuites" section on every page
+- **Exit-Intent Popups**: Smart targeting based on page content
+- **Navigation Access**: "Ressources" menu item with dropdown to all guides
+
+**🎯 Email Automation System:**
+- **5-Email Nurturing Sequences**: Specialized sequences per lead magnet category
+- **Welcome Series**: Introduction to Safa Shili's approach and expertise
+- **Value-First Content**: Practical tips and techniques before promotional content
+- **Consultation Encouragement**: Gentle progression toward booking consultation
+- **GDPR Compliance**: Explicit opt-in, easy unsubscribe, data protection
 
 ### Design System Architecture
 
@@ -124,15 +177,16 @@ Key components:
 **Site Configuration**: `/src/lib/constants.ts` contains all business data:
 - Contact information and business hours
 - Service offerings with pricing
-- Navigation structure with submenus  
+- **Navigation structure with "Ressources" menu** including lead magnet dropdown
 - Cities served for local SEO
 - Emergency contact numbers
-- Lead magnets configuration
+- **Lead magnet metadata and configuration**
 
 **Type System**: `/src/lib/types.ts` defines interfaces for:
-- Form data (ContactFormData, BookingData, NewsletterData)
-- Business entities (Service, Article, Testimonial, FAQ)
+- Form data (ContactFormData, BookingData, NewsletterData, **LeadMagnetDownloadData**)
+- Business entities (Service, Article, Testimonial, FAQ, **LeadMagnet**, **EmailSequence**)
 - Geographic data (City information for local SEO)
+- **Lead generation data types** (EmailTemplate, SentEmail, EmailSequenceSubscription)
 
 ### API Architecture
 
@@ -142,7 +196,12 @@ API routes follow RESTful patterns in `/src/app/api/` with production-grade feat
 - `POST /api/contact` - Contact form submission with database persistence
 - `POST /api/newsletter` - Newsletter subscription with GDPR compliance
 - `GET/POST /api/booking` - Appointment booking with Google Calendar integration
-- `POST /api/download` - Lead magnet downloads with analytics tracking
+- **`POST /api/download`** - **Lead magnet downloads with email automation and analytics**
+  - Validates lead magnet form submissions
+  - Triggers email delivery with PDF attachments
+  - Initiates 5-email nurturing sequences
+  - Tracks conversion funnel analytics
+  - Manages GDPR-compliant data collection
 - `POST /api/analytics` - Custom analytics events storage
 
 **Admin APIs:**
@@ -384,12 +443,15 @@ The site emphasizes these psychological specialties:
 
 ## Production Notes
 
-**Current Status**: ✅ Fully production-ready with comprehensive testing
+**Current Status**: ✅ Fully production-ready with comprehensive testing and complete lead generation funnel
 
 **Architecture Highlights:**
 - Hybrid database/memory storage for maximum reliability
 - Client-side MDX rendering for React 18 compatibility  
 - Professional email service with Resend API
+- **Complete Phase 1 Critical Growth Engine with 3 professional lead magnets**
+- **Multi-touchpoint conversion funnel with email automation**
+- **Smart contextual lead magnet targeting based on content**
 - Comprehensive test coverage across all critical paths
 - Local SEO optimization for Seine-Saint-Denis region
 
@@ -398,14 +460,26 @@ The site emphasizes these psychological specialties:
 - Use `npm run build` to verify production compatibility
 - Follow the established design system patterns
 - Maintain GDPR compliance for all data operations
+- **Test lead generation funnel components and email automation**
+- **Verify contextual lead magnet targeting accuracy**
 - Test email functionality in both development and production modes
 
 **When working on this codebase:**
 - Maintain the professional, empathetic tone appropriate for mental health services
 - Ensure all new features support the local SEO strategy for the Seine-Saint-Denis region
+- **Preserve the conversion funnel integrity when making changes to pages**
+- **Test lead magnet contextual targeting when modifying content**
+- **Verify email sequence triggers when updating lead generation components**
 - Test database operations in both connected and fallback modes
 - Verify email delivery through both Resend and development channels
 - Run the full test suite to ensure no regressions
+
+**Lead Generation System Maintenance:**
+- Content changes may affect contextual lead magnet targeting
+- Blog posts determine which lead magnet appears in sidebar via content analysis
+- Specialty pages have predefined lead magnet mappings
+- Exit-intent popups adapt based on page type and user behavior
+- All lead magnet downloads trigger email automation sequences
 
 **Emergency Contacts & Support:**
 - Database issues: Check Render dashboard and Prisma logs
@@ -413,4 +487,4 @@ The site emphasizes these psychological specialties:
 - Build failures: Review `npm run build` output and dependency versions
 - Performance issues: Use `npm run analyze` for bundle analysis
 
-The website is ready for immediate production deployment following the `RENDER_DEPLOYMENT.md` guide.
+The website is ready for immediate production deployment following the `RENDER_DEPLOYMENT.md` guide. The complete Phase 1 Critical Growth Engine with lead magnets, email automation, and multi-touchpoint conversion funnel is fully operational and production-ready.

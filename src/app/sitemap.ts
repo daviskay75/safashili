@@ -55,6 +55,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/ressources`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
   ]
 
   // Pages spécialités dynamiques
@@ -86,6 +92,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
+  // Pages lead magnets (ressources gratuites)
+  const leadMagnetPages = [
+    'sortir-violence-conjugale',
+    'gerer-anxiete-quotidien',
+    '10-signes-consultation'
+  ].map((leadMagnet) => ({
+    url: `${baseUrl}/ressources/${leadMagnet}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }))
+
   // Articles de blog dynamiques
   const blogEntries = getBlogSitemapEntries().map((entry) => ({
     url: `${baseUrl}${entry.url}`,
@@ -100,6 +118,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...specialtyPages,
     ...modalityPages,
     ...cityPages,
+    ...leadMagnetPages,
     ...blogEntries,
   ]
 }
