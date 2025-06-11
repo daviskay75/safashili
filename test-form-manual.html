@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manual Form Test Guide</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .step { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .code { background: #000; color: #0f0; padding: 10px; border-radius: 4px; font-family: monospace; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .warning { background: #fff3cd; border: 1px solid #ffeaa7; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Manual Form Testing Guide</h1>
+    
+    <div class="step">
+        <h3>Step 1: Open the form</h3>
+        <p>Go to: <a href="https://safashili.com/rendez-vous" target="_blank">https://safashili.com/rendez-vous</a></p>
+        <p>Click on the "Demande de contact" tab if it's not active</p>
+    </div>
+    
+    <div class="step">
+        <h3>Step 2: Fill ALL required fields exactly like this:</h3>
+        <ul>
+            <li><strong>Prénom:</strong> Test</li>
+            <li><strong>Nom:</strong> User</li>
+            <li><strong>Email:</strong> test@example.com</li>
+            <li><strong>Téléphone:</strong> 06 12 34 56 78 (with spaces!)</li>
+            <li><strong>Motif:</strong> This is a test consultation request with more than twenty characters to meet validation.</li>
+            <li><strong>✅ Check RGPD consent</strong></li>
+        </ul>
+    </div>
+    
+    <div class="step">
+        <h3>Step 3: Before submitting - run this in browser console (F12):</h3>
+        <div class="code">
+// Check form state
+const form = document.querySelector('form');
+const submitBtn = document.querySelector('button[type="submit"]');
+console.log('Form found:', !!form);
+console.log('Submit button enabled:', !submitBtn?.disabled);
+
+// Check required fields
+const fields = ['firstName', 'lastName', 'email', 'phone', 'reasonForConsultation'];
+fields.forEach(field => {
+    const el = document.querySelector(`[name="${field}"]`);
+    console.log(`${field}:`, el?.value, 'Valid:', el?.validity?.valid);
+});
+
+// Check RGPD
+const rgpd = document.querySelector('[name="rgpdConsent"]');
+console.log('RGPD checked:', rgpd?.checked);
+        </div>
+    </div>
+    
+    <div class="step success">
+        <h3>Step 4: Submit and watch for success message</h3>
+        <p>If everything is filled correctly, you should see a green success message after clicking "Envoyer ma demande de rendez-vous"</p>
+    </div>
+    
+    <div class="step warning">
+        <h3>If form still scrolls to top:</h3>
+        <ol>
+            <li>Check browser console for JavaScript errors</li>
+            <li>Try different browser (Chrome, Firefox, Safari)</li>
+            <li>Clear browser cache completely</li>
+            <li>Test on mobile device</li>
+        </ol>
+    </div>
+    
+    <h2>🎯 Puppeteer Test Result: ✅ FORM WORKS</h2>
+    <p>The automated test confirmed the form successfully submits and shows success messages. If you're still experiencing issues, it's likely a browser-specific or user interaction issue.</p>
+</body>
+</html>

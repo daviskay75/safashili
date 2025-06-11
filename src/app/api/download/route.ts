@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { LeadMagnetSchema } from '@/lib/schemas'
+import { LeadMagnetDownloadSchema } from '@/lib/schemas'
+import { EmailService } from '@/lib/email'
 import { 
   withRateLimit, 
   validateRequestBody, 
@@ -10,83 +11,75 @@ import {
   getQueryParams
 } from '@/lib/api-helpers'
 import { validateEmailSecurity } from '@/lib/security'
+import { trackEvent } from '@/lib/analytics'
 import { readFile } from 'fs/promises'
 import { join } from 'path'
+import { DatabaseContactManager } from '@/lib/database'
 
-// Stockage des tokens de téléchargement (en production, utiliser une vraie DB)
-interface DownloadToken {
-  email: string
-  guideType: string
-  expiresAt: number
-  used: boolean
-  createdAt: string
+// Types pour les lead magnets
+interface LeadMagnet {
+  slug: string
+  title: string
+  fileName: string
+  filePath: string
+  category: string
+  description: string
 }
 
-const downloadTokens = new Map<string, DownloadToken>()
-const downloadStats = new Map<string, {
-  totalRequests: number
-  totalDownloads: number
-  emailsByGuide: Record<string, number>
-}>()
-
-// Configuration des guides disponibles
-const AVAILABLE_GUIDES = {
-  'guide-violence-conjugale': {
-    title: 'Guide - Sortir de la violence conjugale',
-    filename: 'guide-violence-conjugale.pdf',
-    description: 'Conseils pratiques et ressources pour sortir de la violence conjugale'
+// Configuration des lead magnets disponibles
+const LEAD_MAGNETS: Record<string, LeadMagnet> = {
+  'sortir-violence-conjugale': {
+    slug: 'sortir-violence-conjugale',
+    title: 'Guide Complet : Sortir de la Violence Conjugale',
+    fileName: 'guide-sortir-violence-conjugale.pdf',
+    filePath: '/content/lead-magnets/pdfs/guide-sortir-violence-conjugale.pdf',
+    category: 'violence',
+    description: 'Guide professionnel de 12 pages pour accompagner les victimes de violence conjugale'
   },
-  'guide-psychotraumatisme': {
-    title: 'Guide - Comprendre le psychotraumatisme',
-    filename: 'guide-psychotraumatisme.pdf', 
-    description: 'Les mécanismes du trauma et les étapes de guérison'
+  '10-signes-consultation': {
+    slug: '10-signes-consultation',
+    title: '10 Signes Qu\'il Faut Consulter un Psychologue',
+    fileName: '10-signes-consultation-psychologue.pdf',
+    filePath: '/content/lead-magnets/pdfs/10-signes-consultation-psychologue.pdf',
+    category: 'consultation',
+    description: 'Checklist pratique pour identifier le besoin d\'accompagnement psychologique'
   },
-  'guide-adolescents': {
-    title: 'Guide - Accompagner un adolescent en difficulté',
-    filename: 'guide-adolescents.pdf',
-    description: 'Conseils pour les parents et proches d\'adolescents'
-  },
-  'guide-souffrance-travail': {
-    title: 'Guide - Gérer la souffrance au travail',
-    filename: 'guide-souffrance-travail.pdf',
-    description: 'Reconnaître et agir face au burnout et au harcèlement'
-  },
-  'autotest-bien-etre': {
-    title: 'Autotest - Évaluer votre bien-être psychologique',
-    filename: 'autotest-bien-etre.pdf',
-    description: 'Questionnaire d\'auto-évaluation de votre santé mentale'
+  'gerer-anxiete-quotidien': {
+    slug: 'gerer-anxiete-quotidien',
+    title: 'Gérer l\'Anxiété au Quotidien : Techniques Pratiques',
+    fileName: 'guide-gerer-anxiete-quotidien.pdf',
+    filePath: '/content/lead-magnets/pdfs/guide-gerer-anxiete-quotidien.pdf',
+    category: 'anxiety',
+    description: 'Guide pratique de 8 pages avec techniques concrètes de gestion de l\'anxiété'
   }
-} as const
-
-// Générer un token sécurisé
-function generateDownloadToken(): string {
-  return Array.from(crypto.getRandomValues(new Uint8Array(32)))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('')
 }
 
-// POST - Demander un téléchargement avec email gate
-async function handleDownloadRequest(request: NextRequest): Promise<NextResponse> {
+async function handleLeadMagnetRequest(request: NextRequest): Promise<NextResponse> {
   try {
     // Valider la méthode HTTP
     const methodError = validateHTTPMethod(request, ['POST'])
     if (methodError) return methodError
 
     // Valider et parser les données
-    const validationResult = await validateRequestBody(request, LeadMagnetSchema)
+    const validationResult = await validateRequestBody(request, LeadMagnetDownloadSchema)
     if (!validationResult.success) {
       return validationResult.error
     }
 
-    const leadData = validationResult.data
+    const downloadData = validationResult.data
 
-    // Vérifier que le guide existe
-    if (!(leadData.guideType in AVAILABLE_GUIDES)) {
-      return createErrorResponse('Guide non disponible', 404)
+    // Vérifier que le lead magnet existe
+    const leadMagnet = LEAD_MAGNETS[downloadData.leadMagnetSlug]
+    if (!leadMagnet) {
+      return createErrorResponse(
+        'Guide non trouvé',
+        404,
+        { slug: downloadData.leadMagnetSlug }
+      )
     }
 
     // Validation de sécurité de l'email
-    const emailSecurity = validateEmailSecurity(leadData.email)
+    const emailSecurity = validateEmailSecurity(downloadData.email)
     if (!emailSecurity.isValid) {
       return createErrorResponse(
         'Adresse email non autorisée',
@@ -95,227 +88,183 @@ async function handleDownloadRequest(request: NextRequest): Promise<NextResponse
       )
     }
 
-    // Générer un token de téléchargement
-    const downloadToken = generateDownloadToken()
-    const expiresAt = Date.now() + (24 * 60 * 60 * 1000) // 24h
-
-    const tokenData: DownloadToken = {
-      email: leadData.email.toLowerCase(),
-      guideType: leadData.guideType,
-      expiresAt,
-      used: false,
-      createdAt: new Date().toISOString()
+    // Log en cas d'email à risque
+    if (emailSecurity.risk === 'medium' || emailSecurity.risk === 'high') {
+      console.warn('🚨 Email à risque pour téléchargement:', {
+        email: downloadData.email,
+        risk: emailSecurity.risk,
+        leadMagnet: leadMagnet.slug
+      })
     }
 
-    downloadTokens.set(downloadToken, tokenData)
-
-    // Inscrire automatiquement à la newsletter si consentement
-    if (leadData.marketingConsent) {
-      // Créer les données pour la newsletter
-      const newsletterData = {
-        email: leadData.email,
-        firstName: leadData.firstName,
-        interests: [leadData.guideType.split('-')[1]], // Extraire l'intérêt du type de guide
-        marketingConsent: true,
-        rgpdConsent: leadData.rgpdConsent
-      }
-
-      // Appeler l'API newsletter en interne (simulation)
-      console.log('📧 Auto-inscription newsletter:', newsletterData.email)
+    // Enregistrer le téléchargement dans la base de données
+    try {
+      await DatabaseContactManager.saveLeadMagnetDownload({
+        leadMagnetSlug: leadMagnet.slug,
+        email: downloadData.email,
+        firstName: downloadData.firstName,
+        lastName: downloadData.lastName,
+        phone: downloadData.phone,
+        source: downloadData.source,
+        userAgent: request.headers.get('user-agent') || '',
+        ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '',
+        gdprConsent: downloadData.rgpdConsent,
+        emailSequenceSubscribed: downloadData.subscribeToNewsletter || false
+      })
+    } catch (dbError) {
+      console.error('Erreur base de données:', dbError)
+      // Continuer même si la DB échoue (mode dégradé)
     }
 
-    // Mettre à jour les statistiques
-    const stats = downloadStats.get('global') || { 
-      totalRequests: 0, 
-      totalDownloads: 0, 
-      emailsByGuide: {} 
-    }
-    stats.totalRequests++
-    stats.emailsByGuide[leadData.guideType] = (stats.emailsByGuide[leadData.guideType] || 0) + 1
-    downloadStats.set('global', stats)
-
-    // Créer l'URL de téléchargement sécurisée
-    const downloadUrl = `/api/download?token=${downloadToken}&guide=${leadData.guideType}`
-
-    // Log de succès
-    console.log('📥 Demande de téléchargement:', {
-      email: leadData.email,
-      guide: leadData.guideType,
-      newsletter: leadData.marketingConsent,
-      token: downloadToken.substring(0, 8) + '...'
+    // Envoyer l'email de confirmation avec le lien de téléchargement
+    const emailResult = await EmailService.sendLeadMagnetEmail({
+      email: downloadData.email,
+      firstName: downloadData.firstName,
+      leadMagnet: leadMagnet,
+      downloadData: downloadData
     })
 
-    return createSuccessResponse(
-      {
-        downloadUrl,
-        guideInfo: AVAILABLE_GUIDES[leadData.guideType],
-        expiresAt: new Date(expiresAt).toISOString(),
-        newsletterSubscribed: leadData.marketingConsent
-      },
-      'Lien de téléchargement généré avec succès ! Le lien expire dans 24h.'
-    )
-
-  } catch (error) {
-    logAPIError('download-request', error as Error, request)
-    return createErrorResponse('Erreur lors de la génération du lien', 500)
-  }
-}
-
-// GET - Télécharger le fichier avec token
-async function handleSecureDownload(request: NextRequest): Promise<NextResponse> {
-  try {
-    const params = getQueryParams(request)
-    const token = params.token
-    const guideType = params.guide
-
-    if (!token || !guideType) {
-      return createErrorResponse('Token et type de guide requis', 400)
-    }
-
-    // Vérifier le token
-    const tokenData = downloadTokens.get(token)
-    if (!tokenData) {
-      return createErrorResponse('Token invalide', 403)
-    }
-
-    // Vérifier l'expiration
-    if (Date.now() > tokenData.expiresAt) {
-      downloadTokens.delete(token)
-      return createErrorResponse('Token expiré', 403)
-    }
-
-    // Vérifier le type de guide
-    if (tokenData.guideType !== guideType) {
-      return createErrorResponse('Token ne correspond pas au guide demandé', 403)
-    }
-
-    // Vérifier que le guide existe
-    if (!(guideType in AVAILABLE_GUIDES)) {
-      return createErrorResponse('Guide non trouvé', 404)
-    }
-
-    // Marquer comme utilisé (mais garder pour les stats)
-    tokenData.used = true
-    downloadTokens.set(token, tokenData)
-
-    // Mettre à jour les stats de téléchargement
-    const stats = downloadStats.get('global') || { 
-      totalRequests: 0, 
-      totalDownloads: 0, 
-      emailsByGuide: {} 
-    }
-    stats.totalDownloads++
-    downloadStats.set('global', stats)
-
-    try {
-      // Tenter de servir le fichier PDF (si il existe)
-      const filePath = join(process.cwd(), 'public', 'downloads', AVAILABLE_GUIDES[guideType as keyof typeof AVAILABLE_GUIDES].filename)
-      const fileBuffer = await readFile(filePath)
-
-      // Log du téléchargement
-      console.log('📄 Téléchargement effectué:', {
-        email: tokenData.email,
-        guide: guideType,
-        token: token.substring(0, 8) + '...'
-      })
-
-      // Retourner le fichier PDF
-      return new NextResponse(fileBuffer, {
-        headers: {
-          'Content-Type': 'application/pdf',
-          'Content-Disposition': `attachment; filename="${AVAILABLE_GUIDES[guideType as keyof typeof AVAILABLE_GUIDES].filename}"`,
-          'Cache-Control': 'no-store, no-cache, must-revalidate',
-          'Pragma': 'no-cache'
-        }
-      })
-
-    } catch {
-      // Si le fichier n'existe pas, retourner un PDF de placeholder
-      console.warn('⚠️ Fichier PDF non trouvé:', guideType)
-      
-      return createSuccessResponse(
-        {
-          message: 'Téléchargement validé',
-          guide: AVAILABLE_GUIDES[guideType as keyof typeof AVAILABLE_GUIDES],
-          note: 'Le fichier sera bientôt disponible. Vous recevrez un email de notification.'
-        },
-        'Téléchargement autorisé - Fichier en préparation'
+    if (!emailResult.success) {
+      logAPIError('download', new Error(emailResult.error || 'Email send failed'), request)
+      return createErrorResponse(
+        'Erreur lors de l\'envoi de l\'email. Veuillez réessayer.',
+        500,
+        { emailError: emailResult.error }
       )
     }
 
-  } catch (error) {
-    logAPIError('download-file', error as Error, request)
-    return createErrorResponse('Erreur lors du téléchargement', 500)
-  }
-}
-
-// GET - Statistiques des téléchargements (pour admin)
-async function handleDownloadStats(request: NextRequest): Promise<NextResponse> {
-  try {
-    const stats = downloadStats.get('global') || { 
-      totalRequests: 0, 
-      totalDownloads: 0, 
-      emailsByGuide: {} 
+    // Déclencher l'automation email si l'utilisateur s'est abonné
+    if (downloadData.subscribeToNewsletter) {
+      try {
+        await EmailService.subscribeToSequence({
+          email: downloadData.email,
+          firstName: downloadData.firstName,
+          lastName: downloadData.lastName,
+          source: 'lead_magnet_download',
+          sourceId: leadMagnet.slug,
+          sequenceSlug: getSequenceForCategory(leadMagnet.category)
+        })
+      } catch (sequenceError) {
+        console.error('Erreur inscription séquence email:', sequenceError)
+        // Ne pas faire échouer la requête pour ça
+      }
     }
 
-    const conversionRate = stats.totalRequests > 0 
-      ? Math.round((stats.totalDownloads / stats.totalRequests) * 100) 
-      : 0
+    // Tracker l'événement analytique
+    trackEvent({
+      action: 'lead_magnet_download',
+      category: 'lead_generation',
+      label: leadMagnet.slug,
+      value: 1,
+      custom_parameters: {
+        leadMagnetTitle: leadMagnet.title,
+        category: leadMagnet.category,
+        source: downloadData.source,
+        subscribed: downloadData.subscribeToNewsletter
+      }
+    })
 
-    // Calculer les stats par guide
-    const guideStats = Object.entries(AVAILABLE_GUIDES).map(([key, guide]) => ({
-      guideType: key,
-      title: guide.title,
-      requests: stats.emailsByGuide[key] || 0,
-      percentage: stats.totalRequests > 0 
-        ? Math.round(((stats.emailsByGuide[key] || 0) / stats.totalRequests) * 100)
-        : 0
-    }))
+    // Log succès
+    console.log('📥 Téléchargement lead magnet:', {
+      email: downloadData.email,
+      leadMagnet: leadMagnet.slug,
+      source: downloadData.source,
+      subscribed: downloadData.subscribeToNewsletter
+    })
 
     return createSuccessResponse({
-      overview: {
-        totalRequests: stats.totalRequests,
-        totalDownloads: stats.totalDownloads,
-        conversionRate: `${conversionRate}%`
+      message: 'Guide envoyé par email avec succès !',
+      leadMagnet: {
+        title: leadMagnet.title,
+        category: leadMagnet.category
       },
-      byGuide: guideStats,
-      activeTokens: Array.from(downloadTokens.values())
-        .filter(token => !token.used && Date.now() < token.expiresAt).length
+      emailSent: true,
+      subscribed: downloadData.subscribeToNewsletter
     })
 
   } catch (error) {
-    logAPIError('download-stats', error as Error, request)
-    return createErrorResponse('Erreur lors de la récupération des statistiques', 500)
+    logAPIError('download', error as Error, request)
+    return createErrorResponse(
+      'Erreur interne du serveur',
+      500,
+      { error: (error as Error).message }
+    )
   }
 }
 
-// Nettoyage périodique des tokens expirés
-function cleanupExpiredTokens(): void {
-  const now = Date.now()
-  for (const [token, data] of downloadTokens.entries()) {
-    if (now > data.expiresAt) {
-      downloadTokens.delete(token)
+// Endpoint pour télécharger directement le fichier (avec token sécurisé)
+async function handleDirectDownload(request: NextRequest): Promise<NextResponse> {
+  try {
+    const url = new URL(request.url)
+    const slug = url.searchParams.get('slug')
+    const token = url.searchParams.get('token')
+
+    if (!slug || !token) {
+      return createErrorResponse('Paramètres manquants', 400)
     }
+
+    // Vérifier le token (simple vérification pour l'exemple)
+    // En production, utiliser un JWT ou système plus robuste
+    const expectedToken = generateDownloadToken(slug)
+    if (token !== expectedToken) {
+      return createErrorResponse('Token invalide', 403)
+    }
+
+    const leadMagnet = LEAD_MAGNETS[slug]
+    if (!leadMagnet) {
+      return createErrorResponse('Guide non trouvé', 404)
+    }
+
+    // Lire le fichier PDF
+    try {
+      const filePath = join(process.cwd(), 'public', leadMagnet.filePath)
+      const fileBuffer = await readFile(filePath)
+
+      // Retourner le fichier avec les headers appropriés
+      return new NextResponse(fileBuffer, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': `attachment; filename="${leadMagnet.fileName}"`,
+          'Content-Length': fileBuffer.length.toString(),
+          'Cache-Control': 'private, no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      })
+    } catch (fileError) {
+      console.error('Erreur lecture fichier:', fileError)
+      return createErrorResponse('Fichier non disponible', 404)
+    }
+
+  } catch (error) {
+    logAPIError('download-direct', error as Error, request)
+    return createErrorResponse('Erreur interne', 500)
   }
 }
 
-// Nettoyage toutes les heures
-if (typeof window === 'undefined') {
-  setInterval(cleanupExpiredTokens, 3600000)
-}
-
-// Routes avec rate limiting
-export const POST = withRateLimit('download')(handleDownloadRequest)
-
-export async function GET(request: NextRequest) {
-  const params = getQueryParams(request)
-  const action = params.action
-
-  switch (action) {
-    case 'stats':
-      return handleDownloadStats(request)
-    default:
-      // Par défaut, téléchargement sécurisé
-      return handleSecureDownload(request)
+// Helper pour déterminer la séquence email selon la catégorie
+function getSequenceForCategory(category: string): string {
+  const sequences: Record<string, string> = {
+    'violence': 'violence-conjugale-welcome',
+    'anxiety': 'anxiety-management-welcome', 
+    'consultation': 'general-welcome',
+    'default': 'general-welcome'
   }
+  
+  return sequences[category] || sequences.default
 }
+
+// Helper pour générer un token de téléchargement sécurisé
+function generateDownloadToken(slug: string): string {
+  // En production, utiliser un système plus robuste (JWT, expiration, etc.)
+  const secret = process.env.DOWNLOAD_TOKEN_SECRET || 'development-secret'
+  const timestamp = Math.floor(Date.now() / (1000 * 60 * 60)) // Valid 1 heure
+  
+  // Hash simple pour l'exemple (utiliser crypto en production)
+  return Buffer.from(`${slug}-${timestamp}-${secret}`).toString('base64')
+}
+
+// Routes principales
+export const POST = withRateLimit('download')(handleLeadMagnetRequest)
+export const GET = handleDirectDownload

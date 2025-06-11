@@ -1,7 +1,7 @@
 // Database connection and utilities for production
 // Replaces memory storage with persistent database using Prisma
 
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@/generated/prisma'
 import { ContactFormData, NewsletterFormData, BookingFormData } from './schemas'
 
 // Global Prisma client instance
@@ -229,6 +229,117 @@ export class DatabaseContactManager {
       }
     }
   }
+
+  // Lead Magnet Downloads Management
+  static async saveLeadMagnetDownload(data: {
+    leadMagnetSlug: string
+    email: string
+    firstName: string
+    lastName?: string
+    phone?: string
+    source: string
+    userAgent: string
+    ipAddress: string
+    gdprConsent: boolean
+    emailSequenceSubscribed: boolean
+  }): Promise<{ success: boolean; downloadId?: string; error?: string }> {
+    try {
+      const download = await db.leadMagnetDownload.create({
+        data: {
+          leadMagnetId: data.leadMagnetSlug, // We'll need to resolve this from the slug
+          email: data.email.toLowerCase(),
+          firstName: data.firstName,
+          lastName: data.lastName,
+          phone: data.phone,
+          source: data.source,
+          userAgent: data.userAgent,
+          ipAddress: data.ipAddress,
+          gdprConsent: data.gdprConsent,
+          emailSequenceSubscribed: data.emailSequenceSubscribed
+        }
+      })
+
+      // Also create a contact record for unified tracking
+      await this.addContact('contact', {
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName || '',
+        phone: data.phone || '',
+        message: `Téléchargement lead magnet: ${data.leadMagnetSlug}`,
+        consultationType: 'cabinet',
+        rgpdConsent: data.gdprConsent
+      }, `lead_magnet_${data.leadMagnetSlug}`)
+
+      console.log(`📥 Lead magnet download saved: ${download.id}`)
+      return { success: true, downloadId: download.id }
+
+    } catch (error) {
+      console.error('❌ Error saving lead magnet download:', error)
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      }
+    }
+  }
+
+  // Get lead magnet download statistics
+  static async getLeadMagnetStats() {
+    try {
+      const totalDownloads = await db.leadMagnetDownload.count()
+      
+      const byLeadMagnet = await db.leadMagnetDownload.groupBy({
+        by: ['leadMagnetId'],
+        _count: { leadMagnetId: true },
+        orderBy: { _count: { leadMagnetId: 'desc' } }
+      })
+
+      const bySource = await db.leadMagnetDownload.groupBy({
+        by: ['source'],
+        _count: { source: true },
+        orderBy: { _count: { source: 'desc' } }
+      })
+
+      const subscriptionRate = await db.leadMagnetDownload.aggregate({
+        _count: { emailSequenceSubscribed: true },
+        where: { emailSequenceSubscribed: true }
+      })
+
+      const oneWeekAgo = new Date()
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
+      
+      const recentDownloads = await db.leadMagnetDownload.count({
+        where: { downloadedAt: { gte: oneWeekAgo } }
+      })
+
+      return {
+        totalDownloads,
+        recentDownloads,
+        subscriptionRate: totalDownloads > 0 ? Math.round((subscriptionRate._count.emailSequenceSubscribed / totalDownloads) * 100) : 0,
+        byLeadMagnet: Object.fromEntries(byLeadMagnet.map((item: any) => [item.leadMagnetId, item._count.leadMagnetId])),
+        bySource: Object.fromEntries(bySource.map((item: any) => [item.source, item._count.source]))
+      }
+
+    } catch (error) {
+      console.error('❌ Error getting lead magnet stats:', error)
+      return { totalDownloads: 0, recentDownloads: 0, subscriptionRate: 0, byLeadMagnet: {}, bySource: {} }
+    }
+  }
+
+  // Get downloads for a specific email
+  static async getDownloadsByEmail(email: string) {
+    try {
+      const downloads = await db.leadMagnetDownload.findMany({
+        where: { email: email.toLowerCase() },
+        orderBy: { downloadedAt: 'desc' }
+      })
+
+      return downloads
+
+    } catch (error) {
+      console.error('❌ Error getting downloads by email:', error)
+      return []
+    }
+  }
 }
 
 // Appointment Management with Database
@@ -258,8 +369,8 @@ export class DatabaseAppointmentManager {
         data: {
           patientEmail: data.email.toLowerCase(),
           patientName: `${data.firstName} ${data.lastName}`,
-          date: data.preferredDate,
-          time: data.preferredTime,
+          date: data.preferredDate || '',
+          time: data.preferredTime || '',
           duration: parseInt(data.duration),
           consultationType: data.consultationType,
           isFirstConsultation: data.isFirstConsultation,

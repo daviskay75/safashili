@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Test</title>
+</head>
+<body>
+    <h1>Browser Test</h1>
+    <p>Open browser console (F12) and test the form at:</p>
+    <p><a href="https://safashili.com/rendez-vous" target="_blank">https://safashili.com/rendez-vous</a></p>
+    
+    <script>
+        console.log('✅ JavaScript is working');
+        console.log('🔍 Browser:', navigator.userAgent);
+        
+        // Test to run in console on the actual form page
+        const testCode = `
+// Run this in the browser console on the booking page:
+console.log('🧪 FORM TEST STARTED');
+
+// Check if form exists
+const form = document.querySelector('form');
+console.log('📋 Form found:', !!form);
+
+// Check required fields
+const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'reasonForConsultation'];
+requiredFields.forEach(field => {
+    const element = document.querySelector(\`[name="\${field}"]\`);
+    console.log(\`📝 \${field}:\`, element ? '✅ Found' : '❌ Missing');
+});
+
+// Check submit button
+const submitBtn = document.querySelector('button[type="submit"]');
+console.log('🔘 Submit button:', submitBtn ? '✅ Found' : '❌ Missing');
+console.log('🔘 Submit disabled:', submitBtn ? submitBtn.disabled : 'N/A');
+
+console.log('🧪 Copy and run this code in console on the form page');
+        `;
+        
+        console.log(testCode);
+    </script>
+</body>
+</html>

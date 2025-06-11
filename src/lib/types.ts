@@ -33,6 +33,48 @@ export interface LeadMagnetData {
   guide: 'violence-conjugale' | 'signes-consulter' | 'gerer-anxiete'
 }
 
+// New enhanced lead magnet types
+export interface LeadMagnetDownloadData {
+  leadMagnetSlug: string
+  firstName: string
+  lastName?: string
+  email: string
+  phone?: string
+  source: string
+  subscribeToNewsletter?: boolean
+  rgpdConsent: boolean
+}
+
+export interface LeadMagnet {
+  slug: string
+  title: string
+  fileName: string
+  filePath: string
+  category: 'violence' | 'anxiety' | 'consultation' | 'general'
+  description: string
+  targetAudience: string
+  isActive: boolean
+}
+
+export interface EmailSequence {
+  slug: string
+  name: string
+  category: string
+  triggerType: string
+  triggerValue?: string
+  isActive: boolean
+  totalEmails: number
+}
+
+export interface EmailTemplate {
+  emailNumber: number
+  subject: string
+  htmlContent: string
+  textContent: string
+  delayDays: number
+  isActive: boolean
+}
+
 export interface Specialty {
   id: string
   title: string

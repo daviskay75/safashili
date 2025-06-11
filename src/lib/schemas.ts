@@ -47,6 +47,24 @@ export const NewsletterSchema = z.object({
   )
 })
 
+// Schema de validation pour les téléchargements de lead magnets
+export const LeadMagnetDownloadSchema = z.object({
+  leadMagnetSlug: z.string().min(1, 'L\'identifiant du guide est requis'),
+  firstName: z.string().min(2, 'Le prénom doit contenir au moins 2 caractères'),
+  lastName: z.string().min(2, 'Le nom doit contenir au moins 2 caractères').optional(),
+  email: z.string().email('Adresse email invalide'),
+  phone: z.string().regex(
+    /^(?:\+33|0)[1-9](?:[\s.-]?[0-9]){8}$/,
+    'Numéro de téléphone invalide (format français requis)'
+  ).optional(),
+  source: z.string().min(1, 'La page source est requise'),
+  subscribeToNewsletter: z.boolean().default(false),
+  rgpdConsent: z.boolean().refine(
+    val => val === true,
+    'Vous devez accepter les conditions de traitement des données personnelles'
+  )
+})
+
 // Schema de validation pour la prise de rendez-vous
 export const BookingSchema = z.object({
   firstName: z.string().min(2, 'Le prénom doit contenir au moins 2 caractères'),

@@ -84,3 +84,138 @@ model AnalyticsEvent {
 
   @@map("analytics_events")
 }
+
+// Lead magnets (PDF guides and resources)
+model LeadMagnet {
+  id              String   @id @default(cuid())
+  slug            String   @unique // URL-friendly identifier
+  title           String   // "Guide: Sortir de la violence conjugale"
+  description     String   // Short description for landing pages
+  fileName        String   // PDF file name
+  filePath        String   // Path to PDF file
+  fileSize        Int      // File size in bytes
+  category        String   // 'violence' | 'anxiety' | 'consultation' | 'general'
+  targetAudience  String   // 'patients' | 'families' | 'professionals'
+  isActive        Boolean  @default(true)
+  downloadCount   Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  downloads       LeadMagnetDownload[]
+  
+  @@map("lead_magnets")
+}
+
+// Track lead magnet downloads for analytics and follow-up
+model LeadMagnetDownload {
+  id              String   @id @default(cuid())
+  leadMagnetId    String
+  email           String
+  firstName       String
+  lastName        String?
+  phone           String?
+  source          String   // Page where download occurred
+  userAgent       String?
+  ipAddress       String?
+  downloadedAt    DateTime @default(now())
+  gdprConsent     Boolean  @default(false)
+  emailSequenceSubscribed Boolean @default(false)
+  
+  // Relations
+  leadMagnet      LeadMagnet @relation(fields: [leadMagnetId], references: [id], onDelete: Cascade)
+  
+  @@map("lead_magnet_downloads")
+}
+
+// Email automation sequences
+model EmailSequence {
+  id              String   @id @default(cuid())
+  name            String   // "Violence Conjugale Welcome Series"
+  slug            String   @unique // URL-friendly identifier
+  description     String?
+  category        String   // 'lead_magnet' | 'newsletter' | 'booking_follow_up'
+  triggerType     String   // 'lead_magnet_download' | 'newsletter_signup' | 'manual'
+  triggerValue    String?  // Lead magnet slug or other trigger identifier
+  isActive        Boolean  @default(true)
+  totalEmails     Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  emails          EmailTemplate[]
+  subscriptions   EmailSequenceSubscription[]
+  
+  @@map("email_sequences")
+}
+
+// Individual emails within a sequence
+model EmailTemplate {
+  id              String   @id @default(cuid())
+  sequenceId      String
+  emailNumber     Int      // 1, 2, 3, etc. (order in sequence)
+  subject         String
+  htmlContent     String   // HTML email content
+  textContent     String   // Plain text version
+  delayDays       Int      // Days to wait before sending (0 = immediate)
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  sequence        EmailSequence @relation(fields: [sequenceId], references: [id], onDelete: Cascade)
+  sentEmails      SentEmail[]
+  
+  @@unique([sequenceId, emailNumber])
+  @@map("email_templates")
+}
+
+// Track user subscriptions to email sequences
+model EmailSequenceSubscription {
+  id                String   @id @default(cuid())
+  sequenceId        String
+  email             String
+  firstName         String
+  lastName          String?
+  subscriptionSource String  // 'lead_magnet_download' | 'newsletter_signup' | 'manual'
+  sourceId          String?  // ID of the lead magnet download or other source
+  status            String   @default("active") // 'active' | 'paused' | 'completed' | 'unsubscribed'
+  currentEmailNumber Int     @default(0) // Last email sent in sequence
+  nextEmailDate     DateTime? // When next email should be sent
+  subscribedAt      DateTime @default(now())
+  completedAt       DateTime?
+  unsubscribedAt    DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  sequence          EmailSequence @relation(fields: [sequenceId], references: [id], onDelete: Cascade)
+  sentEmails        SentEmail[]
+  
+  @@unique([sequenceId, email])
+  @@map("email_sequence_subscriptions")
+}
+
+// Track sent emails for analytics and avoiding duplicates
+model SentEmail {
+  id                String   @id @default(cuid())
+  subscriptionId    String
+  templateId        String
+  email             String
+  subject           String
+  status            String   @default("sent") // 'sent' | 'delivered' | 'opened' | 'clicked' | 'failed'
+  sentAt            DateTime @default(now())
+  deliveredAt       DateTime?
+  openedAt          DateTime?
+  clickedAt         DateTime?
+  failureReason     String?
+  resendId          String?  // Resend email ID for tracking
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  subscription      EmailSequenceSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  template          EmailTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  
+  @@map("sent_emails")
+}

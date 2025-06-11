@@ -1,13 +1,19 @@
+'use client'
+
 import { ReactNode } from 'react'
 import { Header } from './Header'
 import { Footer } from './Footer'
+import { ExitIntentPopup, useExitIntentPopup } from '@/components/ExitIntentPopup'
 
 interface LayoutProps {
   children: ReactNode
   className?: string
+  disableExitIntent?: boolean
 }
 
-export function Layout({ children, className }: LayoutProps) {
+export function Layout({ children, className, disableExitIntent = false }: LayoutProps) {
+  const { isActive, pageType, deactivate, currentUrl } = useExitIntentPopup()
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -15,6 +21,15 @@ export function Layout({ children, className }: LayoutProps) {
         {children}
       </main>
       <Footer />
+      
+      {/* Exit Intent Popup */}
+      {!disableExitIntent && isActive && (
+        <ExitIntentPopup
+          onClose={deactivate}
+          pageType={pageType}
+          currentUrl={currentUrl}
+        />
+      )}
     </div>
   )
 }

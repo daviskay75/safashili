@@ -289,6 +289,262 @@ export class EmailService {
     }
   }
 
+  // Envoyer email avec lead magnet (nouveau)
+  static async sendLeadMagnetEmail(params: {
+    email: string
+    firstName: string
+    leadMagnet: any
+    downloadData: any
+  }): Promise<EmailSendResult> {
+    try {
+      const downloadToken = this.generateDownloadToken(params.leadMagnet.slug)
+      const downloadUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/download?slug=${params.leadMagnet.slug}&token=${downloadToken}`
+      
+      const emailContent = this.getLeadMagnetEmailTemplate(params.leadMagnet.category)
+      
+      // Production: Utiliser Resend
+      if (process.env.RESEND_API_KEY) {
+        return await this.sendWithResend({
+          to: [params.email],
+          subject: `Votre guide "${params.leadMagnet.title}" est prêt !`,
+          html: this.formatTemplate(emailContent, {
+            firstName: params.firstName,
+            guideTitle: params.leadMagnet.title,
+            downloadUrl: downloadUrl,
+            guideDescription: params.leadMagnet.description,
+            subscribed: params.downloadData.subscribeToNewsletter ? 'Oui' : 'Non'
+          })
+        })
+      }
+      
+      // Development: Log only
+      console.log('📧 Lead magnet email envoyé à (DEV):', params.email, params.leadMagnet.title)
+      return { success: true, messageId: `dev_leadmagnet_${Date.now()}` }
+      
+    } catch (error) {
+      console.error('Erreur lead magnet email:', error)
+      return { success: false, error: String(error) }
+    }
+  }
+
+  // S'abonner à une séquence email (nouveau)
+  static async subscribeToSequence(params: {
+    email: string
+    firstName: string
+    lastName?: string
+    source: string
+    sourceId: string
+    sequenceSlug: string
+  }): Promise<EmailSendResult> {
+    try {
+      // Ici, on créerait l'abonnement dans la base de données
+      // Pour l'instant, on simule avec un log
+      console.log('📧 Inscription séquence email:', {
+        email: params.email,
+        sequence: params.sequenceSlug,
+        source: params.source
+      })
+
+      // Envoyer le premier email de la séquence immédiatement
+      const firstEmail = this.getSequenceEmail(params.sequenceSlug, 1)
+      if (firstEmail) {
+        if (process.env.RESEND_API_KEY) {
+          return await this.sendWithResend({
+            to: [params.email],
+            subject: firstEmail.subject,
+            html: this.formatTemplate(firstEmail.content, {
+              firstName: params.firstName,
+              lastName: params.lastName || ''
+            })
+          })
+        }
+      }
+
+      return { success: true, messageId: `sequence_${Date.now()}` }
+      
+    } catch (error) {
+      console.error('Erreur inscription séquence:', error)
+      return { success: false, error: String(error) }
+    }
+  }
+
+  // Helper pour générer token de téléchargement
+  private static generateDownloadToken(slug: string): string {
+    const secret = process.env.DOWNLOAD_TOKEN_SECRET || 'development-secret'
+    const timestamp = Math.floor(Date.now() / (1000 * 60 * 60)) // Valid 1 heure
+    return Buffer.from(`${slug}-${timestamp}-${secret}`).toString('base64')
+  }
+
+  // Templates pour les lead magnets
+  private static getLeadMagnetEmailTemplate(category: string): string {
+    const templates = {
+      violence: `
+        <h2>Bonjour {firstName},</h2>
+        
+        <p>Merci pour votre confiance. Votre guide "<strong>{guideTitle}</strong>" est maintenant disponible au téléchargement.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="{downloadUrl}" style="background-color: #2563EB; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            📥 Télécharger mon guide
+          </a>
+        </div>
+        
+        <p><strong>Important :</strong> Ce lien est sécurisé et expire dans 24 heures.</p>
+        
+        <hr style="margin: 30px 0;">
+        
+        <h3>Vous n'êtes pas seule</h3>
+        <p>Si vous vous trouvez dans une situation de violence, sachez que de l'aide professionnelle existe :</p>
+        <ul>
+          <li><strong>3919</strong> - Violences Femmes Info (gratuit, 24h/24)</li>
+          <li><strong>Cabinet Safa Shili</strong> - 06 51 68 74 30</li>
+        </ul>
+        
+        <p>N'hésitez pas à prendre rendez-vous pour un accompagnement personnalisé.</p>
+        
+        <p>Prenez soin de vous,<br>
+        <strong>Safa Shili</strong><br>
+        <em>Psychologue Clinicienne</em></p>
+      `,
+      
+      anxiety: `
+        <h2>Bonjour {firstName},</h2>
+        
+        <p>Votre guide "<strong>{guideTitle}</strong>" est prêt ! Il contient des techniques concrètes que vous pouvez appliquer dès aujourd'hui.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="{downloadUrl}" style="background-color: #10B981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            📥 Télécharger mon guide
+          </a>
+        </div>
+        
+        <p><strong>Conseil :</strong> Commencez par la technique de respiration 4-7-8 présentée dans le guide. Elle est particulièrement efficace en cas de crise d'anxiété.</p>
+        
+        <hr style="margin: 30px 0;">
+        
+        <h3>Besoin d'un accompagnement personnalisé ?</h3>
+        <p>L'anxiété se traite très bien avec les bonnes techniques. En consultation, nous pouvons :</p>
+        <ul>
+          <li>Identifier les causes spécifiques de votre anxiété</li>
+          <li>Développer des stratégies personnalisées</li>
+          <li>Pratiquer les techniques ensemble</li>
+        </ul>
+        
+        <p>Première consultation de 15 minutes gratuite au 06 51 68 74 30.</p>
+        
+        <p>Bien à vous,<br>
+        <strong>Safa Shili</strong><br>
+        <em>Psychologue Clinicienne</em></p>
+      `,
+      
+      consultation: `
+        <h2>Bonjour {firstName},</h2>
+        
+        <p>Votre checklist "<strong>{guideTitle}</strong>" est maintenant disponible !</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="{downloadUrl}" style="background-color: #7C3AED; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            📥 Télécharger ma checklist
+          </a>
+        </div>
+        
+        <p>Cette checklist vous aidera à identifier si un accompagnement psychologique pourrait vous être bénéfique.</p>
+        
+        <hr style="margin: 30px 0;">
+        
+        <h3>Prêt(e) à faire le premier pas ?</h3>
+        <p>Si la checklist vous a amené(e) à envisager un accompagnement, sachez que :</p>
+        <ul>
+          <li>La première consultation de 15 minutes est <strong>gratuite</strong></li>
+          <li>Nous définissons ensemble vos objectifs</li>
+          <li>L'accompagnement est adapté à votre rythme</li>
+        </ul>
+        
+        <p>N'hésitez pas à m'appeler au 06 51 68 74 30 pour échanger sur votre situation.</p>
+        
+        <p>Cordialement,<br>
+        <strong>Safa Shili</strong><br>
+        <em>Psychologue Clinicienne</em></p>
+      `
+    }
+    
+    return templates[category as keyof typeof templates] || templates.consultation
+  }
+
+  // Récupérer un email d'une séquence
+  private static getSequenceEmail(sequenceSlug: string, emailNumber: number): { subject: string; content: string } | null {
+    const sequences = {
+      'violence-conjugale-welcome': [
+        {
+          subject: 'Bienvenue {firstName} - Vous avez fait le bon choix',
+          content: `
+            <h2>Bienvenue {firstName},</h2>
+            
+            <p>Merci pour votre confiance en téléchargeant notre guide sur la violence conjugale.</p>
+            
+            <p>Sachez que <strong>demander de l'aide est un acte de courage</strong>. Vous avez fait le premier pas vers votre libération.</p>
+            
+            <h3>Dans les prochains jours, vous recevrez :</h3>
+            <ul>
+              <li>Des conseils pour préparer votre première consultation</li>
+              <li>Des techniques d'auto-soin en attendant votre rendez-vous</li>
+              <li>Des informations sur le processus thérapeutique</li>
+            </ul>
+            
+            <p><strong>En cas d'urgence :</strong> 3919 (gratuit, 24h/24)</p>
+            
+            <p>Vous n'êtes plus seule,<br>
+            <strong>Safa Shili</strong></p>
+          `
+        }
+      ],
+      'anxiety-management-welcome': [
+        {
+          subject: 'Vos premiers outils contre l\'anxiété',
+          content: `
+            <h2>Bonjour {firstName},</h2>
+            
+            <p>Félicitations pour avoir pris les devants face à votre anxiété !</p>
+            
+            <p>L'anxiété peut sembler envahissante, mais elle se traite très bien avec les bonnes techniques.</p>
+            
+            <h3>Commencez dès aujourd'hui :</h3>
+            <ol>
+              <li><strong>Technique 4-7-8</strong> : Pratiquez 3 fois par jour</li>
+              <li><strong>Journal d'anxiété</strong> : Notez vos déclencheurs</li>
+              <li><strong>Exercice doux</strong> : 20 minutes de marche quotidienne</li>
+            </ol>
+            
+            <p>Dans les prochains emails, je partagerai avec vous des techniques plus avancées.</p>
+            
+            <p>À bientôt,<br>
+            <strong>Safa Shili</strong></p>
+          `
+        }
+      ],
+      'general-welcome': [
+        {
+          subject: 'Bienvenue dans votre parcours de bien-être',
+          content: `
+            <h2>Bienvenue {firstName},</h2>
+            
+            <p>Merci d'avoir téléchargé notre guide. Prendre soin de sa santé mentale est essentiel.</p>
+            
+            <p>Je vais vous accompagner avec des conseils pratiques et bienveillants.</p>
+            
+            <p>N'hésitez pas à me contacter pour toute question.</p>
+            
+            <p>Bien à vous,<br>
+            <strong>Safa Shili</strong></p>
+          `
+        }
+      ]
+    }
+    
+    const sequence = sequences[sequenceSlug as keyof typeof sequences]
+    return sequence?.[emailNumber - 1] || null
+  }
+
   // Formater un template avec les données
   private static formatTemplate(template: string, data: Record<string, any>): string {
     let formatted = template
