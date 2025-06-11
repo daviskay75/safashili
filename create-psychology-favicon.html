@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Psychology Favicon</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; text-align: center; }
+        canvas { border: 2px solid #ddd; margin: 10px; }
+        .download-btn { background: #3b82f6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 10px; }
+        .step { background: #f0f9ff; padding: 15px; margin: 15px; border-radius: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>🧠 Create Psychology Favicon</h1>
+    
+    <canvas id="favicon16" width="16" height="16"></canvas>
+    <canvas id="favicon32" width="32" height="32"></canvas>
+    
+    <br>
+    <a href="#" id="download16" class="download-btn">Download 16x16 ICO</a>
+    <a href="#" id="download32" class="download-btn">Download 32x32 ICO</a>
+    
+    <div class="step">
+        <h3>📋 Instructions:</h3>
+        <ol>
+            <li>Download the 32x32 ICO file above</li>
+            <li>Go to <a href="https://favicon.io/favicon-converter/" target="_blank">favicon.io converter</a></li>
+            <li>Upload the downloaded PNG file</li>
+            <li>Download the generated favicon.ico</li>
+            <li>Replace both:
+                <ul>
+                    <li><code>/public/favicon.ico</code></li>
+                    <li><code>/src/app/favicon.ico</code></li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <script>
+        function drawPsychologyIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const scale = size / 32;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Blue background circle
+            ctx.fillStyle = '#3b82f6';
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, (size/2) - 1, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // White head silhouette
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.ellipse(size/2, size/2 + 2*scale, 6*scale, 8*scale, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Blue heart inside
+            ctx.fillStyle = '#3b82f6';
+            if (size >= 32) {
+                // Detailed heart for larger sizes
+                ctx.beginPath();
+                ctx.arc(size/2 - 2*scale, size/2, 1.5*scale, 0, 2 * Math.PI);
+                ctx.arc(size/2 + 2*scale, size/2, 1.5*scale, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                ctx.beginPath();
+                ctx.moveTo(size/2, size/2 + 3*scale);
+                ctx.lineTo(size/2 - 3*scale, size/2);
+                ctx.lineTo(size/2 + 3*scale, size/2);
+                ctx.fill();
+            } else {
+                // Simple heart for small sizes
+                ctx.fillRect(size/2-2, size/2-1, 4, 3);
+            }
+            
+            // White growth dots
+            ctx.fillStyle = 'white';
+            if (size >= 16) {
+                ctx.beginPath();
+                ctx.arc(size/2 - 4*scale, size/2 - 6*scale, 0.8*scale, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                ctx.beginPath();
+                ctx.arc(size/2 + 4*scale, size/2 - 6*scale, 0.8*scale, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                ctx.beginPath();
+                ctx.arc(size/2, size/2 - 8*scale, 0.6*scale, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        }
+        
+        // Draw favicons
+        drawPsychologyIcon(document.getElementById('favicon16'), 16);
+        drawPsychologyIcon(document.getElementById('favicon32'), 32);
+        
+        // Download handlers
+        document.getElementById('download16').onclick = function(e) {
+            e.preventDefault();
+            const canvas = document.getElementById('favicon16');
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'psychology-favicon-16.png';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        };
+        
+        document.getElementById('download32').onclick = function(e) {
+            e.preventDefault();
+            const canvas = document.getElementById('favicon32');
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'psychology-favicon-32.png';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        };
+    </script>
+</body>
+</html>
