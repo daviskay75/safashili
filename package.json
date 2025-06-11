@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "prisma generate && next build",
+    "build": "PRISMA_HIDE_UPDATE_MESSAGE=true prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "analyze": "ANALYZE=true npm run build",
@@ -21,7 +21,8 @@
     "test:business": "jest tests/business --testTimeout=10000",
     "test:security": "jest tests/security --testTimeout=10000",
     "test:all": "npm run test:api && npm run test:forms && npm run test:seo && npm run test:business",
-    "test:full": "npm run test:all && npm run test:accessibility && npm run test:performance && npm run test:integration && npm run test:security"
+    "test:full": "npm run test:all && npm run test:accessibility && npm run test:performance && npm run test:integration && npm run test:security",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
