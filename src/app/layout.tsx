@@ -4,6 +4,12 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Safa Shili - Psychologue Rosny-sous-Bois",
   description: "Cabinet de psychologie clinique spécialisé en violence conjugale et psychotraumatologie",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
