@@ -215,12 +215,25 @@ async function handleDirectDownload(request: NextRequest): Promise<NextResponse>
       return createErrorResponse('Guide non trouvé', 404)
     }
 
-    // Lire le fichier PDF
+    // Lire le fichier PDF professionnel
     try {
       const filePath = join(process.cwd(), 'public', leadMagnet.filePath)
       const fileBuffer = await readFile(filePath)
 
-      // Retourner le fichier avec les headers appropriés
+      // Tracker le téléchargement réussi
+      trackEvent({
+        action: 'pdf_download_success',
+        category: 'lead_generation',
+        label: leadMagnet.slug,
+        value: 1,
+        custom_parameters: {
+          leadMagnetTitle: leadMagnet.title,
+          category: leadMagnet.category,
+          fileSize: fileBuffer.length
+        }
+      })
+
+      // Retourner le fichier PDF avec les headers appropriés
       return new NextResponse(fileBuffer, {
         status: 200,
         headers: {
@@ -229,12 +242,28 @@ async function handleDirectDownload(request: NextRequest): Promise<NextResponse>
           'Content-Length': fileBuffer.length.toString(),
           'Cache-Control': 'private, no-cache, no-store, must-revalidate',
           'Pragma': 'no-cache',
-          'Expires': '0'
+          'Expires': '0',
+          // Headers supplémentaires pour les clients d'email
+          'X-Content-Type-Options': 'nosniff',
+          'X-Frame-Options': 'SAMEORIGIN'
         }
       })
     } catch (fileError) {
-      console.error('Erreur lecture fichier:', fileError)
-      return createErrorResponse('Fichier non disponible', 404)
+      console.error('Erreur lecture fichier PDF:', fileError)
+      
+      // Tracker l'erreur
+      trackEvent({
+        action: 'pdf_download_error',
+        category: 'lead_generation',
+        label: leadMagnet.slug,
+        value: 0,
+        custom_parameters: {
+          error: 'file_not_found',
+          filePath: leadMagnet.filePath
+        }
+      })
+      
+      return createErrorResponse('Fichier PDF non disponible temporairement', 404)
     }
 
   } catch (error) {

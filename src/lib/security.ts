@@ -105,6 +105,7 @@ export function sanitizeInput(input: string): string {
 export function validateOrigin(request: NextRequest): boolean {
   const origin = request.headers.get('origin')
   const referer = request.headers.get('referer')
+  const url = new URL(request.url)
   
   // En production, liste des domaines autorisés
   const allowedOrigins = [
@@ -120,8 +121,13 @@ export function validateOrigin(request: NextRequest): boolean {
     return true // En développement, autoriser toutes les origines
   }
   
+  // Autoriser les requêtes GET vers /api/download (liens d'email)
+  if (request.method === 'GET' && url.pathname === '/api/download') {
+    return true // Les liens d'email n'ont pas d'origin/referer
+  }
+  
   if (!origin && !referer) {
-    return false // Pas d'origine = suspect
+    return false // Pas d'origine = suspect (sauf download GET)
   }
   
   if (origin && allowedOrigins.includes(origin)) {
