@@ -3,7 +3,11 @@ import {
   PhoneIcon, 
   EnvelopeIcon, 
   MapPinIcon,
-  ClockIcon
+  ClockIcon,
+  DocumentArrowDownIcon,
+  ShieldCheckIcon,
+  HeartIcon,
+  ClipboardDocumentCheckIcon
 } from '@heroicons/react/24/outline'
 import { Container, Button } from '@/components/ui'
 import { CONTACT_INFO, EMERGENCY_CONTACTS } from '@/lib/constants'
@@ -83,36 +87,43 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Services */}
+            {/* Ressources Gratuites */}
             <div>
-              <h3 className="text-lg font-semibold mb-4">Spécialités</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link href="/specialites/violence-conjugale" className="text-gray-300 hover:text-white transition-colors">
-                    Violence conjugale
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/specialites/psychotraumatologie" className="text-gray-300 hover:text-white transition-colors">
-                    Psychotraumatologie
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/specialites/therapie-adolescents" className="text-gray-300 hover:text-white transition-colors">
-                    Thérapie adolescents
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/specialites/souffrance-travail" className="text-gray-300 hover:text-white transition-colors">
-                    Souffrance au travail
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/modalites/therapie-groupe" className="text-gray-300 hover:text-white transition-colors">
-                    Thérapies de groupe
-                  </Link>
-                </li>
-              </ul>
+              <h3 className="text-lg font-semibold mb-4">Ressources Gratuites</h3>
+              <div className="space-y-3">
+                <Link href="/ressources/sortir-violence-conjugale" className="flex items-start space-x-2 text-gray-300 hover:text-white transition-colors group">
+                  <ShieldCheckIcon className="h-4 w-4 mt-0.5 text-red-400 group-hover:text-red-300" />
+                  <div>
+                    <p className="text-sm font-medium">Guide Violence Conjugale</p>
+                    <p className="text-xs text-gray-400">12 pages • Gratuit</p>
+                  </div>
+                </Link>
+                
+                <Link href="/ressources/gerer-anxiete-quotidien" className="flex items-start space-x-2 text-gray-300 hover:text-white transition-colors group">
+                  <HeartIcon className="h-4 w-4 mt-0.5 text-blue-400 group-hover:text-blue-300" />
+                  <div>
+                    <p className="text-sm font-medium">Gérer l'Anxiété</p>
+                    <p className="text-xs text-gray-400">8 pages • Techniques pratiques</p>
+                  </div>
+                </Link>
+                
+                <Link href="/ressources/10-signes-consultation" className="flex items-start space-x-2 text-gray-300 hover:text-white transition-colors group">
+                  <ClipboardDocumentCheckIcon className="h-4 w-4 mt-0.5 text-purple-400 group-hover:text-purple-300" />
+                  <div>
+                    <p className="text-sm font-medium">10 Signes Consultation</p>
+                    <p className="text-xs text-gray-400">Checklist • 2 pages</p>
+                  </div>
+                </Link>
+              </div>
+              
+              <div className="mt-4">
+                <Link href="/ressources">
+                  <Button variant="outline" size="sm" className="text-blue-400 border-blue-400 hover:bg-blue-400 hover:text-gray-900">
+                    <DocumentArrowDownIcon className="h-4 w-4 mr-1" />
+                    Voir tous les guides
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             {/* Urgences */}

@@ -561,6 +561,15 @@ export const NAVIGATION = [
       { name: 'Consultations domicile', href: '/modalites/consultation-domicile' }
     ]
   },
+  { 
+    name: 'Ressources', 
+    href: '/ressources',
+    submenu: [
+      { name: 'Guide Violence Conjugale', href: '/ressources/sortir-violence-conjugale' },
+      { name: 'Gérer l\'Anxiété', href: '/ressources/gerer-anxiete-quotidien' },
+      { name: '10 Signes Consultation', href: '/ressources/10-signes-consultation' }
+    ]
+  },
   { name: 'Infos pratiques', href: '/infos-pratiques' },
   { name: 'Blog', href: '/blog' },
   { name: 'Contact', href: '/contact' }

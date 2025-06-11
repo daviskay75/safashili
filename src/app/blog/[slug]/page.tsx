@@ -9,7 +9,7 @@ import {
   generateBlogSEO,
   BLOG_CONFIG 
 } from '@/lib/blog'
-import { Container, Section, Heading, Card, CardContent, Badge } from '@/components/ui'
+import { Container, Section, Heading, Card, CardContent, Badge, ViolenceLeadMagnetSidebar, AnxietyLeadMagnetSidebar, ConsultationLeadMagnetSidebar } from '@/components/ui'
 import { ClockIcon, TagIcon, UserIcon, CalendarIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { BlogContent } from '@/components/BlogContent'
 
@@ -74,6 +74,36 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const relatedPosts = getRelatedPosts(post, 3)
   const mdxSource = await serialize(post.content)
+
+  // Determine relevant lead magnet based on post content
+  const getRelevantLeadMagnet = () => {
+    const content = post.content.toLowerCase()
+    const tags = post.tags.map(tag => tag.toLowerCase())
+    const category = post.category.toLowerCase()
+    
+    // Violence content
+    if (content.includes('violence') || 
+        content.includes('maltraitance') || 
+        tags.some(tag => tag.includes('violence')) ||
+        category.includes('violence')) {
+      return 'violence'
+    }
+    
+    // Anxiety/stress content
+    if (content.includes('anxiété') || 
+        content.includes('stress') || 
+        content.includes('angoisse') ||
+        content.includes('burn') ||
+        tags.some(tag => tag.includes('anxiété') || tag.includes('stress')) ||
+        category.includes('stress') || category.includes('anxiété')) {
+      return 'anxiety'
+    }
+    
+    // Default to consultation guide
+    return 'consultation'
+  }
+
+  const leadMagnetVariant = getRelevantLeadMagnet()
 
   return (
     <main>
@@ -172,9 +202,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 {/* Sidebar */}
                 <aside className="lg:col-span-1">
                   <div className="sticky top-8 space-y-6">
-                    {/* Table of Contents could go here */}
+                    {/* Contextual Lead Magnet */}
+                    {leadMagnetVariant === 'violence' && (
+                      <ViolenceLeadMagnetSidebar />
+                    )}
+                    {leadMagnetVariant === 'anxiety' && (
+                      <AnxietyLeadMagnetSidebar />
+                    )}
+                    {leadMagnetVariant === 'consultation' && (
+                      <ConsultationLeadMagnetSidebar />
+                    )}
                     
-                    {/* CTA */}
+                    {/* Consultation CTA */}
                     <Card className="bg-blue-50 border-blue-200">
                       <CardContent className="p-6 text-center">
                         <Heading as="h3" variant="card" className="text-blue-900 mb-3">
@@ -191,8 +230,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         </Link>
                       </CardContent>
                     </Card>
-                    
-                    {/* Share buttons could go here */}
                   </div>
                 </aside>
               </div>

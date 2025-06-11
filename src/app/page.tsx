@@ -8,7 +8,9 @@ import {
   HeartIcon,
   UserGroupIcon,
   ClockIcon,
-  CheckCircleIcon
+  CheckCircleIcon,
+  DocumentArrowDownIcon,
+  ClipboardDocumentCheckIcon
 } from '@heroicons/react/24/outline'
 import { Layout } from '@/components/layout'
 import { Button, Section, Heading, Card, CardContent, Badge, Testimonials, FAQ } from '@/components/ui'
@@ -103,6 +105,90 @@ export default function HomePage() {
             <div className="absolute -bottom-4 -left-4 bg-blue-600 text-white rounded-lg shadow-lg p-3">
               <p className="font-semibold">PSYCHOLOGUE</p>
               <p className="text-xs">DIPLOMÉE DE L'UNIVERSITÉ DE PARIS</p>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* Lead Magnet Section */}
+      <Section variant="secondary" padding="xl">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-8 border border-purple-100">
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
+              <div>
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                    <ClipboardDocumentCheckIcon className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <Badge variant="specialty" className="bg-purple-100 text-purple-800">
+                    Guide Gratuit
+                  </Badge>
+                </div>
+                
+                <Heading as="h2" variant="section" className="mb-4">
+                  Ai-je besoin d'une consultation ?
+                </Heading>
+                
+                <p className="text-gray-600 mb-6">
+                  <strong>Vous vous posez des questions</strong> sur votre état psychologique ? 
+                  Téléchargez notre <strong>checklist professionnelle</strong> pour identifier 
+                  si un accompagnement pourrait vous être bénéfique.
+                </p>
+                
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center">
+                    <CheckCircleIcon className="h-5 w-5 text-purple-600 mr-3 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">Auto-évaluation guidée en 10 points</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircleIcon className="h-5 w-5 text-purple-600 mr-3 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">Signaux d'alarme à ne pas ignorer</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircleIcon className="h-5 w-5 text-purple-600 mr-3 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">Conseils pour préparer votre première consultation</span>
+                  </div>
+                </div>
+                
+                <Link href="/ressources/10-signes-consultation">
+                  <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white">
+                    <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+                    Télécharger le guide gratuit
+                  </Button>
+                </Link>
+              </div>
+              
+              <div className="relative">
+                <div className="bg-white rounded-xl shadow-lg p-6 transform rotate-2 hover:rotate-0 transition-transform">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-bold text-gray-900">Checklist Consultation</h3>
+                    <span className="text-purple-600 font-semibold">GRATUIT</span>
+                  </div>
+                  
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-purple-100 rounded mr-2"></div>
+                      <span className="text-sm text-gray-600">✓ Évaluation objective</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-purple-100 rounded mr-2"></div>
+                      <span className="text-sm text-gray-600">✓ Signaux d'alarme</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-purple-100 rounded mr-2"></div>
+                      <span className="text-sm text-gray-600">✓ Types d'accompagnement</span>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-gray-500 border-t pt-3">
+                    Par Safa Shili, Psychologue Clinicienne
+                  </div>
+                </div>
+                
+                <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                  2 pages
+                </div>
+              </div>
             </div>
           </div>
         </div>

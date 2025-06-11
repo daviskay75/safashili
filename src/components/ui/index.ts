@@ -9,3 +9,13 @@ export { Section } from './Section'
 export { Heading } from './Heading'
 export { Testimonials, TestimonialsGrid } from './Testimonials'
 export { FAQ, FAQCompact, FAQWithSearch } from './FAQ'
+
+// Lead Magnet components
+export { 
+  LeadMagnetSidebar, 
+  CompactLeadMagnetSidebar,
+  ViolenceLeadMagnetSidebar,
+  AnxietyLeadMagnetSidebar,
+  ConsultationLeadMagnetSidebar,
+  AllLeadMagnetsSidebar
+} from '../LeadMagnetSidebar'
