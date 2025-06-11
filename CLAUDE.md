@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **production-ready** professional psychology practice website for Safa Shili, a clinical psychologist in Rosny-sous-Bois, France. The site specializes in violence counseling, psychotraumatology, and therapeutic services with comprehensive local SEO optimization for the Seine-Saint-Denis area.
+This is a **production-ready** professional psychology practice website for Safa Shili, a clinical psychologist in Rosny-sous-Bois, France. The site specializes in violence counseling, psychotraumatology, and therapeutic services with comprehensive locail SEO optimization for the Seine-Saint-Denis area.
 
 **Status**: ✅ Production-ready, deployed on Render with PostgreSQL database and Resend email service.
 
