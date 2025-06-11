@@ -545,7 +545,7 @@ Préparez un message à vous envoyer :
 
 **📞 Prise de rendez-vous :**
 06 51 68 74 30  
-contact@safa-shili-psychologue.fr
+contact@safashili.com
 
 **🕐 Horaires :**
 - Lundi : 14h00-21h00

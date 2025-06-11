@@ -2,11 +2,11 @@ export default {
   titleTemplate: '%s | Safa Shili Psychologue Rosny-sous-Bois',
   defaultTitle: 'Safa Shili - Psychologue Spécialisée Violence & Traumatisme',
   description: 'Psychologue clinicienne à Rosny-sous-Bois spécialisée en violence conjugale, psychotraumatologie et accompagnement adolescents/adultes. Consultations au cabinet, à domicile et en groupe.',
-  canonical: 'https://safa-shili-psychologue.fr',
+  canonical: 'https://safashili.com',
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
-    url: 'https://safa-shili-psychologue.fr',
+    url: 'https://safashili.com',
     siteName: 'Safa Shili Psychologue',
     title: 'Safa Shili - Psychologue Spécialisée Violence & Traumatisme',
     description: 'Psychologue clinicienne à Rosny-sous-Bois spécialisée en violence conjugale, psychotraumatologie et accompagnement adolescents/adultes.',

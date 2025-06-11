@@ -21,7 +21,7 @@ export const SITE_CONFIG = {
 
 export const CONTACT_INFO = {
   phone: '06 51 68 74 30',
-  email: 'contact@safa-shili-psychologue.fr',
+  email: 'contact@safashili.com',
   address: {
     street: '7 Rue du Quatrième Zouave',
     city: 'Rosny-sous-Bois',

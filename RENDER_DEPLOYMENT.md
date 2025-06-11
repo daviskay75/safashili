@@ -42,8 +42,8 @@ DATABASE_URL=[Use the External Database URL from your PostgreSQL service]
 
 # Email Service (REQUIRED - get from Resend.com)
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-RESEND_FROM_EMAIL="Safa Shili <contact@safa-shili-psychologue.fr>"
-CONTACT_EMAIL=contact@safa-shili-psychologue.fr
+RESEND_FROM_EMAIL="Safa Shili <contact@safashili.com>"
+CONTACT_EMAIL=contact@safashili.com
 
 # Site Configuration
 NEXT_PUBLIC_SITE_URL=https://your-render-url.onrender.com
@@ -89,7 +89,7 @@ npx prisma db push
 
 #### Custom Domain (Optional)
 1. In Render Dashboard → Your service → Settings → Custom Domains
-2. Add: `safa-shili-psychologue.fr`
+2. Add: `safashili.com`
 3. Update DNS records as instructed by Render
 4. Update `NEXT_PUBLIC_SITE_URL` environment variable
 
@@ -97,7 +97,7 @@ npx prisma db push
 
 ### 1. Resend Email Service
 1. Sign up at [resend.com](https://resend.com)
-2. Verify domain: `safa-shili-psychologue.fr`
+2. Verify domain: `safashili.com`
 3. Get API key from dashboard
 4. Add API key to Render environment variables
 
@@ -157,7 +157,7 @@ Render will monitor: `https://your-app.onrender.com`
 ```bash
 DATABASE_URL=postgresql://...          # From Render PostgreSQL
 RESEND_API_KEY=re_...                 # From Resend.com
-CONTACT_EMAIL=contact@safa-shili-psychologue.fr
+CONTACT_EMAIL=contact@safashili.com
 NEXT_PUBLIC_SITE_URL=https://your-domain.com
 ```
 

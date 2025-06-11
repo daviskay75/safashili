@@ -6,7 +6,7 @@ import '@testing-library/jest-dom'
 // Mock environment variables for tests
 process.env.NODE_ENV = 'test'
 process.env.NEXT_PUBLIC_SITE_URL = 'http://localhost:3000'
-process.env.CONTACT_EMAIL = 'test@safa-shili-psychologue.fr'
+process.env.CONTACT_EMAIL = 'testcontact@safashili.com'
 process.env.PHONE_NUMBER = '06 51 68 74 30'
 
 // Mock Next.js router

@@ -1149,7 +1149,7 @@ const PROCESSING_PURPOSES = {
 // Privacy notice displayed on all forms
 const privacyNotice = {
   controller: "Safa Shili, Psychologue",
-  contact: "contact@safa-shili-psychologue.fr",
+  contact: "contact@safashili.com",
   dpo: "Not required (small practice)",
   purposes: PROCESSING_PURPOSES,
   rights: [
@@ -1183,7 +1183,7 @@ async function handleAccessRequest(email: string, token: string): Promise<DataEx
     data: personalData,
     retention: getRetentionPeriods(personalData),
     rights: getApplicableRights(),
-    contact: 'contact@safa-shili-psychologue.fr'
+    contact: 'contact@safashili.com'
   }
 }
 ```
@@ -1333,8 +1333,8 @@ NEXT_PUBLIC_GA4_MEASUREMENT_ID=G-XXXXXXXXXX
 NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
 
 # Site Configuration
-NEXT_PUBLIC_SITE_URL=https://safa-shili-psychologue.fr
-CONTACT_EMAIL=contact@safa-shili-psychologue.fr
+NEXT_PUBLIC_SITE_URL=https://safashili.com
+CONTACT_EMAIL=contact@safashili.com
 PHONE_NUMBER=06 51 68 74 30
 
 # Security
@@ -1419,13 +1419,13 @@ export const BUSINESS_CONFIG = {
 // vercel.json
 {
   "env": {
-    "NEXT_PUBLIC_SITE_URL": "https://safa-shili-psychologue.fr"
+    "NEXT_PUBLIC_SITE_URL": "https://safashili.com"
   },
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "https://safa-shili-psychologue.fr" },
+        { "key": "Access-Control-Allow-Origin", "value": "https://safashili.com" },
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }

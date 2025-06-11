@@ -138,7 +138,7 @@ npm run lighthouse       # Performance audit
 # Core configuration
 DATABASE_URL="postgresql://..."           # Render PostgreSQL URL
 RESEND_API_KEY="re_..."                  # Resend email service
-CONTACT_EMAIL="contact@safa-shili-psychologue.fr"
+CONTACT_EMAIL="contact@safashili.com"
 NEXT_PUBLIC_SITE_URL="https://your-domain.com"
 NODE_ENV="production"
 CSRF_SECRET="your-strong-random-string"

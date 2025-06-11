@@ -7,7 +7,7 @@
 1. **Go to Google Search Console**: https://search.google.com/search-console/
 2. **Add Property**: 
    - Choose "URL prefix" method
-   - Enter: `https://safa-shili-psychologue.fr`
+   - Enter: `https://safashili.com`
 3. **Verify Ownership** (Choose one method):
    
    **Method A: HTML File Upload**
@@ -27,7 +27,7 @@
 ### **Step 2: Sitemap Submission**
 
 1. **Automatic Sitemap**: Our dynamic sitemap is already configured at:
-   - `https://safa-shili-psychologue.fr/sitemap.xml`
+   - `https://safashili.com/sitemap.xml`
 
 2. **Submit to Search Console**:
    - Go to "Sitemaps" section

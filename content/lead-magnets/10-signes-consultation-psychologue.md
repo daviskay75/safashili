@@ -335,7 +335,7 @@ Centre médical - 1er sous-sol avec ascenseur
 
 **📞 Contact :**
 Téléphone : 06 51 68 74 30  
-Email : contact@safa-shili-psychologue.fr
+Email : contact@safashili.com
 
 **🚌 Accès :**
 - RER E - Gare de Rosny-sous-Bois

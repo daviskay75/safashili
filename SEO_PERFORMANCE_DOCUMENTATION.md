@@ -59,11 +59,11 @@ export default {
   titleTemplate: '%s | Safa Shili Psychologue Rosny-sous-Bois',
   defaultTitle: 'Safa Shili - Psychologue Spécialisée Violence & Traumatisme',
   description: 'Psychologue clinicienne à Rosny-sous-Bois spécialisée en violence conjugale, psychotraumatologie et accompagnement adolescents/adultes.',
-  canonical: 'https://safa-shili-psychologue.fr',
+  canonical: 'https://safashili.com',
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
-    url: 'https://safa-shili-psychologue.fr',
+    url: 'https://safashili.com',
     siteName: 'Safa Shili Psychologue',
     images: [{
       url: '/images/safa-shili-psychologue-og.jpg',
@@ -96,13 +96,13 @@ export default {
 export const localBusinessSchema: StructuredData = {
   '@context': 'https://schema.org',
   '@type': 'MedicalBusiness',
-  '@id': 'https://safa-shili-psychologue.fr/#organization',
+  '@id': 'https://safashili.com/#organization',
   name: 'Safa Shili - Psychologue Clinicienne',
   alternateName: 'Cabinet de Psychologie Safa Shili',
   description: 'Cabinet de psychologie clinique spécialisé en violence conjugale, psychotraumatologie et accompagnement thérapeutique à Rosny-sous-Bois.',
-  url: 'https://safa-shili-psychologue.fr',
+  url: 'https://safashili.com',
   telephone: '06 51 68 74 30',
-  email: 'contact@safa-shili-psychologue.fr',
+  email: 'contact@safashili.com',
   
   // Location & Geographic Coverage
   address: {
@@ -193,7 +193,7 @@ export const localBusinessSchema: StructuredData = {
 export const personSchema: StructuredData = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  '@id': 'https://safa-shili-psychologue.fr/#person',
+  '@id': 'https://safashili.com/#person',
   name: 'Safa Shili',
   givenName: 'Safa',
   familyName: 'Shili',
@@ -241,7 +241,7 @@ export const personSchema: StructuredData = {
   
   // Contact & Location
   worksFor: {
-    '@id': 'https://safa-shili-psychologue.fr/#organization'
+    '@id': 'https://safashili.com/#organization'
   },
   workLocation: {
     '@type': 'Place',
@@ -357,7 +357,7 @@ export const CITIES = [
 Nom: Safa Shili - Psychologue Clinicienne
 Adresse: 7 Rue du Quatrième Zouave, 93110 Rosny-sous-Bois
 Téléphone: 06 51 68 74 30
-Email: contact@safa-shili-psychologue.fr
+Email: contact@safashili.com
 ```
 
 ---

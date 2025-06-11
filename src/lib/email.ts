@@ -34,7 +34,7 @@ MESSAGE:
 {message}
 
 ---
-Envoyé automatiquement depuis safa-shili-psychologue.fr
+Envoyé automatiquement depuis safashili.com
     `,
     toClient: `
 Bonjour {firstName},
@@ -49,7 +49,7 @@ Psychologue clinicienne
 
 ---
 Cabinet de psychologie - 7 Rue du Quatrième Zouave, 93110 Rosny-sous-Bois
-Tél: 06 51 68 74 30 | Email: contact@safa-shili-psychologue.fr
+Tél: 06 51 68 74 30 | Email: contact@safashili.com
     `
   },
 
@@ -103,7 +103,7 @@ CONTACT D'URGENCE:
 {emergencyContact}
 
 ---
-Envoyé automatiquement depuis safa-shili-psychologue.fr
+Envoyé automatiquement depuis safashili.com
     `,
     confirmation: `
 Bonjour {firstName},
@@ -145,7 +145,7 @@ export class EmailService {
       // Production: Utiliser Resend
       if (process.env.RESEND_API_KEY) {
         return await this.sendWithResend({
-          to: [process.env.CONTACT_EMAIL || 'contact@safa-shili-psychologue.fr'],
+          to: [process.env.CONTACT_EMAIL || 'contact@safashili.com'],
           subject: EMAIL_TEMPLATES.contact.subject
             .replace('{firstName}', data.firstName)
             .replace('{lastName}', data.lastName),
@@ -156,7 +156,7 @@ export class EmailService {
       // Development fallback: Log pour développement
       console.log('📧 Email de contact (DEV MODE):', {
         from: `${data.firstName} ${data.lastName} <${data.email}>`,
-        to: process.env.CONTACT_EMAIL || 'contact@safa-shili-psychologue.fr',
+        to: process.env.CONTACT_EMAIL || 'contact@safashili.com',
         subject: `Nouveau contact - ${data.firstName} ${data.lastName}`,
         message: data.message
       })
@@ -226,7 +226,7 @@ export class EmailService {
       // Production: Utiliser Resend
       if (process.env.RESEND_API_KEY) {
         return await this.sendWithResend({
-          to: [process.env.CONTACT_EMAIL || 'contact@safa-shili-psychologue.fr'],
+          to: [process.env.CONTACT_EMAIL || 'contact@safashili.com'],
           subject: EMAIL_TEMPLATES.booking.subject
             .replace('{firstName}', data.firstName)
             .replace('{lastName}', data.lastName),
@@ -260,7 +260,7 @@ export class EmailService {
       const resend = new Resend(process.env.RESEND_API_KEY)
       
       const result = await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL || 'Safa Shili <contact@safa-shili-psychologue.fr>',
+        from: process.env.RESEND_FROM_EMAIL || 'Safa Shili <contact@safashili.com>',
         to: params.to,
         subject: params.subject,
         html: params.html,

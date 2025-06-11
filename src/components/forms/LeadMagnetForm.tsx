@@ -143,7 +143,7 @@ export function LeadMagnetForm({
             
             <div className="bg-blue-50 p-4 rounded-lg mt-6">
               <p className="text-blue-800 font-semibold text-sm">
-                💡 Conseil : Ajoutez contact@safa-shili-psychologue.fr à vos contacts 
+                💡 Conseil : Ajoutez contact@safashili.com à vos contacts 
                 pour recevoir tous nos conseils directement dans votre boîte principale.
               </p>
             </div>

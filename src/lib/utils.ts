@@ -190,7 +190,7 @@ export function generateLocalBusinessSchema() {
     '@type': 'MedicalBusiness',
     name: 'Safa Shili - Psychologue',
     description: 'Cabinet de psychologie clinique spécialisé en violence conjugale, psychotraumatologie et accompagnement thérapeutique.',
-    url: 'https://safa-shili-psychologue.fr',
+    url: 'https://safashili.com',
     telephone: '06 51 68 74 30',
     priceRange: '€€',
     address: {

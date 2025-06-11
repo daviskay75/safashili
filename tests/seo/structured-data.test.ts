@@ -91,7 +91,7 @@ describe('Structured Data Schemas', () => {
       
       expect(violenceServiceSchema['@type']).toBe('MedicalTherapy')
       expect(violenceServiceSchema.name).toContain('Violence')
-      expect(violenceServiceSchema.provider['@id']).toBe('https://safa-shili-psychologue.fr/#organization')
+      expect(violenceServiceSchema.provider['@id']).toBe('https://safashili.com/#organization')
     })
 
     test('should include service area', () => {

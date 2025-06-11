@@ -109,8 +109,8 @@ export function validateOrigin(request: NextRequest): boolean {
   
   // En production, liste des domaines autorisés
   const allowedOrigins = [
-    'https://safa-shili-psychologue.fr',
-    'https://www.safa-shili-psychologue.fr',
+    'https://safashili.com',
+    'https://www.safashili.com',
     'https://safashili.com',
     'https://www.safashili.com',
     'http://localhost:3000', // Pour le développement

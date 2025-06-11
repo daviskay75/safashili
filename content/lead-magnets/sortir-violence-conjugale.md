@@ -385,6 +385,6 @@ De nombreux professionnels sont formés pour vous accompagner sans jugement. Vou
 **Cabinet de Psychologie - Safa Shili**  
 7 Rue du Quatrième Zouave, 93110 Rosny-sous-Bois  
 Tél : 06 51 68 74 30  
-Email : contact@safa-shili-psychologue.fr
+Email : contact@safashili.com
 
 *Document confidentiel - Ne pas laisser à la portée de l'agresseur*

@@ -316,7 +316,7 @@ export default function SignesConsultationGuidePage() {
               <strong>Cabinet :</strong> 06 51 68 74 30
             </div>
             <div>
-              <strong>Email :</strong> contact@safa-shili-psychologue.fr
+              <strong>Email :</strong> contact@safashili.com
             </div>
             <div>
               <strong>Urgences :</strong> 3919 (Violences Info) • 01 45 39 40 00 (Suicide Écoute)
