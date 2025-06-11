@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Psychology Favicon</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .icon-preview { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .sizes { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .size-demo { text-align: center; }
+        canvas { border: 1px solid #ddd; background: white; }
+        .instructions { background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .symbol { background: #3b82f6; color: white; padding: 10px; border-radius: 50%; display: inline-block; }
+    </style>
+</head>
+<body>
+    <h1>🧠 Psychology Practice Favicon Generator</h1>
+    
+    <div class="instructions">
+        <h3>📋 Instructions to generate favicon.ico:</h3>
+        <ol>
+            <li>Right-click on the 32x32 canvas below → "Save image as..." → save as PNG</li>
+            <li>Use an online favicon generator like <a href="https://favicon.io/" target="_blank">favicon.io</a></li>
+            <li>Upload the PNG file and download the generated favicon.ico</li>
+            <li>Replace the existing favicon.ico in both /public/ and /src/app/ directories</li>
+        </ol>
+    </div>
+
+    <div class="icon-preview">
+        <h3>🎨 New Psychology Symbol Design</h3>
+        <p><strong>Concept:</strong> Head silhouette with heart inside + growth dots</p>
+        <p><strong>Symbolism:</strong></p>
+        <ul>
+            <li>🧠 <strong>Head outline:</strong> Mental health focus</li>
+            <li>❤️ <strong>Heart inside:</strong> Care, empathy, healing</li>
+            <li>✨ <strong>Growth dots:</strong> Progress, transformation</li>
+            <li>🔵 <strong>Blue color:</strong> Trust, professionalism, calm</li>
+        </ul>
+        
+        <div class="sizes">
+            <div class="size-demo">
+                <h4>16x16 (Tab)</h4>
+                <canvas id="icon16" width="16" height="16"></canvas>
+            </div>
+            <div class="size-demo">
+                <h4>32x32 (Favicon)</h4>
+                <canvas id="icon32" width="32" height="32"></canvas>
+            </div>
+            <div class="size-demo">
+                <h4>48x48 (Desktop)</h4>
+                <canvas id="icon48" width="48" height="48"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <h3>🔄 Alternative: Use Emoji Favicon</h3>
+        <p>For quick deployment, you can use an emoji-based favicon:</p>
+        <div class="symbol">🧠</div> <div class="symbol">💭</div> <div class="symbol">🌱</div> <div class="symbol">💙</div>
+        <br><br>
+        <p>Add this to your layout.tsx:</p>
+        <pre><code>icon: "data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'&gt;&lt;text y='.9em' font-size='90'&gt;🧠&lt;/text&gt;&lt;/svg&gt;",</code></pre>
+    </div>
+
+    <script>
+        // Draw the psychology symbol on canvases
+        function drawPsychologyIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const scale = size / 100;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Background circle
+            ctx.fillStyle = '#3b82f6';
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2 - 2*scale, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Head silhouette
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.ellipse(size/2, size/2, 15*scale, 20*scale, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Heart shape (simplified)
+            ctx.fillStyle = '#3b82f6';
+            ctx.beginPath();
+            ctx.arc(size/2 - 3*scale, size/2 - 2*scale, 3*scale, 0, 2 * Math.PI);
+            ctx.arc(size/2 + 3*scale, size/2 - 2*scale, 3*scale, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Heart bottom
+            ctx.beginPath();
+            ctx.moveTo(size/2, size/2 + 5*scale);
+            ctx.lineTo(size/2 - 6*scale, size/2 - 2*scale);
+            ctx.lineTo(size/2 + 6*scale, size/2 - 2*scale);
+            ctx.fill();
+            
+            // Growth dots
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(size/2 - 6*scale, size/2 - 8*scale, 1*scale, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size/2 + 6*scale, size/2 - 8*scale, 1*scale, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size/2, size/2 - 10*scale, 0.8*scale, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        
+        // Draw icons at different sizes
+        drawPsychologyIcon(document.getElementById('icon16'), 16);
+        drawPsychologyIcon(document.getElementById('icon32'), 32);
+        drawPsychologyIcon(document.getElementById('icon48'), 48);
+    </script>
+</body>
+</html>

@@ -1,6 +1,26 @@
-<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" fill="#3b82f6" rx="64"/>
-  <circle cx="256" cy="180" r="50" fill="white"/>
-  <path d="M256 260 L220 360 L292 360 Z" fill="white"/>
-  <text x="256" y="450" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="42" font-weight="bold">PSY</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="#3b82f6" stroke="#2563eb" stroke-width="8"/>
+  
+  <!-- Psychology symbol: Head silhouette with heart -->
+  <g fill="white">
+    <!-- Head/mind silhouette -->
+    <path d="M176 176 C176 126, 226 96, 256 96 C286 96, 336 126, 336 176 C336 226, 306 256, 306 286 L306 336 C306 366, 286 396, 256 396 C226 396, 196 366, 196 336 L196 286 C196 256, 176 226, 176 176 Z"/>
+    
+    <!-- Heart inside representing care and empathy -->
+    <path d="M226 196 C216 180, 196 180, 196 204 C196 220, 226 244, 256 268 C286 244, 316 220, 316 204 C316 180, 296 180, 286 196 C276 188, 268 188, 256 196 C244 188, 236 188, 226 196 Z"/>
+    
+    <!-- Growth dots -->
+    <circle cx="210" cy="146" r="6"/>
+    <circle cx="302" cy="146" r="6"/>
+    <circle cx="256" cy="116" r="4"/>
+  </g>
+  
+  <!-- Subtle outer elements for professional touch -->
+  <g fill="rgba(255,255,255,0.3)">
+    <circle cx="256" cy="64" r="4"/>
+    <circle cx="256" cy="448" r="4"/>
+    <circle cx="64" cy="256" r="4"/>
+    <circle cx="448" cy="256" r="4"/>
+  </g>
 </svg>

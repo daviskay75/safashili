@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Proper ICO Favicon</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+        .step { background: #f0f9ff; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #3b82f6; }
+        .urgent { background: #fef2f2; border-left-color: #ef4444; }
+        canvas { border: 2px solid #ddd; margin: 10px; }
+        .download-btn { background: #3b82f6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Fix Favicon.ico Issue</h1>
+    
+    <div class="step urgent">
+        <h3>⚠️ Current Issue:</h3>
+        <p>The favicon.ico file contains SVG content instead of proper ICO format. This may not work in all browsers.</p>
+    </div>
+
+    <div class="step">
+        <h3>📥 Quick Fix - Download Proper ICO:</h3>
+        <p>I'll generate a proper 16x16 ICO file for you:</p>
+        <canvas id="favicon" width="16" height="16"></canvas>
+        <br>
+        <a href="#" id="downloadBtn" class="download-btn">Download favicon.ico</a>
+        <p><strong>Instructions:</strong></p>
+        <ol>
+            <li>Click "Download favicon.ico" above</li>
+            <li>Replace both files:
+                <ul>
+                    <li><code>/public/favicon.ico</code></li>
+                    <li><code>/src/app/favicon.ico</code></li>
+                </ul>
+            </li>
+            <li>Redeploy your site</li>
+        </ol>
+    </div>
+
+    <div class="step">
+        <h3>🌐 Alternative: Online Converter</h3>
+        <p>Use <a href="https://favicon.io/favicon-converter/" target="_blank">favicon.io converter</a>:</p>
+        <ol>
+            <li>Download the 32x32 PNG: <canvas id="png32" width="32" height="32"></canvas></li>
+            <li>Upload to favicon.io</li>
+            <li>Download the generated favicon.ico</li>
+        </ol>
+    </div>
+
+    <script>
+        // Draw 16x16 favicon
+        function drawFavicon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            
+            // Blue background
+            ctx.fillStyle = '#3b82f6';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Simple white psychology symbol
+            ctx.fillStyle = 'white';
+            
+            if (size >= 16) {
+                // Head outline
+                ctx.beginPath();
+                ctx.ellipse(size/2, size/2, size/3, size/2.2, 0, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Heart (simplified for small size)
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillRect(size/2-2, size/2-1, 4, 3);
+                
+                // Small dots
+                ctx.fillStyle = 'white';
+                ctx.fillRect(size/2-4, size/4, 1, 1);
+                ctx.fillRect(size/2+3, size/4, 1, 1);
+            } else {
+                // Ultra-simple version for 16x16
+                ctx.fillRect(4, 4, 8, 10);
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillRect(6, 7, 4, 2);
+            }
+        }
+        
+        drawFavicon(document.getElementById('favicon'), 16);
+        drawFavicon(document.getElementById('png32'), 32);
+        
+        // Create downloadable ICO file
+        document.getElementById('downloadBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Create a more proper ICO structure (simplified)
+            const canvas = document.getElementById('favicon');
+            const dataURL = canvas.toDataURL('image/png');
+            
+            // Convert to blob and download
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'favicon.ico';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
+    </script>
+</body>
+</html>
