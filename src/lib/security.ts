@@ -110,6 +110,8 @@ export function validateOrigin(request: NextRequest): boolean {
   const allowedOrigins = [
     'https://safa-shili-psychologue.fr',
     'https://www.safa-shili-psychologue.fr',
+    'https://safashili.com',
+    'https://www.safashili.com',
     'http://localhost:3000', // Pour le développement
     'http://127.0.0.1:3000'
   ]
